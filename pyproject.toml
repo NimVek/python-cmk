@@ -1,0 +1,128 @@
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.black]
+line-length = 88
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "22.05.0"
+version_files = [
+    "pyproject.toml:version"
+]
+tag_format = "v$version"
+
+[tool.flakeheaven]
+exclude = []
+format = "grouped"
+max_line_length = 88
+show_source = true
+
+[tool.flakeheaven.exceptions."*/__init__.py"]
+pyflakes = ["-F401"]
+
+[tool.flakeheaven.exceptions."tests/"]
+flake8-docstrings = ["-D1??"]
+flake8-darglint = ["-DAR*", "+D0??"]
+flake8-bandit = ["-S101"]
+
+[tool.flakeheaven.plugins]
+dlint = ["+*"]
+flake8-bandit = ["+*"]
+flake8-black = ["+*"]
+flake8-bugbear = ["+*"]
+flake8-builtins = ["+*"]
+flake8-comprehensions = ["+*"]
+flake8-darglint = ["+*"]
+flake8-docstrings = ["+*", "-D401", "-D412"]
+flake8-logging-format = ["+*"]
+flake8-pytest-style = ["+*"]
+flake8-typing-imports = ["+*"]
+flake8-use-fstring-format = ["+*"]
+flake8-use-fstring-percent = ["+*"]
+flake8-use-fstring-prefix = ["+*"]
+mccabe = ["+*"]
+pep8-naming = ["+*"]
+pycodestyle = ["+*"]
+pyflakes = ["+*"]
+pylint = ["+*", "-C0103", "-C0114", "-C0115", "-C0116", "-E0401"]
+
+[tool.isort]
+line_length = 88
+multi_line_output = 3
+balanced_wrapping = true
+atomic = true
+lines_after_imports = 2
+lines_between_types = 1
+combine_star = true
+include_trailing_comma = true
+use_parentheses = true
+known_first_party = "cmk"
+known_third_party = []
+
+[tool.poetry]
+authors = ["NimVek <NimVek@users.noreply.github.com>"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Operating System :: OS Independent",
+    "Natural Language :: English",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Development Status :: 3 - Alpha",
+    "Topic :: System :: Monitoring",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+description = "API for CheckMK"
+license = "GPL-3.0-or-later"
+name = "python-cmk"
+readme = "README.md"
+repository = "https://github.com/NimVek/python-cmk"
+version = "22.05.0"
+packages = [
+    { include = "cmk", from = "src" }
+]
+
+[tool.poetry.dependencies]
+incremental = "^21.3.0"
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+commitizen = "^2.26.0"
+darglint = "^1.8.1"
+dlint = "^0.12.0"
+flake8 = "^4.0.1"
+flake8-bandit = "^3.0.0"
+flake8-broken-line = "^0.4.0"
+flake8-bugbear = "^22.4.25"
+flake8-builtins = "^1.5.3"
+flake8-comprehensions = "^3.9.0"
+flake8-eradicate = "^1.2.1"
+flake8-logging-format = "^0.6.0"
+flake8-markdown = "^0.3.0"
+flake8-simplify = "^0.19.2"
+flake8-tidy-imports = "^4.8.0"
+flake8-type-checking = "^1.5.0"
+flake8-typing-imports = "^1.12.0"
+flake8-use-fstring = "^1.3"
+pep8-naming = "^0.12.1"
+flakeheaven = "^0.11.1"
+ipython = "^8.3.0"
+mkapi = "^1.0.14"
+mkdocs = "^1.3.0"
+mkdocs-material = "^8.2.15"
+mkdocs-simple-hooks = "^0.1.5"
+mypy = "^0.950"
+pre-commit = "^2.19.0"
+pytest = "^7.1.2"
+pytest-cov = "^3.0.0"
+pytest-randomly = "^3.12.0"
+pytest-xdist = "^2.5.0"
+toml-sort = "^0.20.0"
+
+[tool.pytest.ini_options]
+pythonpath = [ "src" ]

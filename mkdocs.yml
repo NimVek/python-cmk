@@ -1,0 +1,31 @@
+---
+site_name          : python-cmk
+site_description   : API for CheckMK
+repo_url           : https://github.com/NimVek/python-cmk
+
+theme              :
+  name: material
+
+nav                :
+  - Home: index.md
+  - Changelog: CHANGELOG.md
+  - Contributing:
+      - Guide: CONTRIBUTING.md
+      - Code of Conduct: CODE_OF_CONDUCT.md
+  - API: mkapi/api/src/cmk|strict
+  - About:
+      - License: LICENSE.md
+
+plugins            :
+  - search
+  - mkapi
+  - mkdocs-simple-hooks:
+      hooks:
+        on_pre_build: dev.mkdocs:on_pre_build
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - extra
+  - pymdownx.details
+  - pymdownx.highlight

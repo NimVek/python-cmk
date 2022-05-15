@@ -1,0 +1,170 @@
+---
+name: Continuous Integration
+
+on  :
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python: [3.9]
+        include:
+          - os: ubuntu-latest
+            CACHE_PIP: ~/.cache/pip
+            CACHE_PRE_COMMIT: ~/.cache/pre-commit
+
+    name: Lint
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ matrix.CACHE_PIP }}
+            ${{ matrix.CACHE_PRE_COMMIT }}
+          key: lint-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('**/.pre-commit-config.yaml')
+            }}
+          restore-keys: |
+            lint-${{ runner.os }}-${{ matrix.python }}-
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install pre-commit
+        run: |
+          python -m pip install --upgrade pip
+          pip install pre-commit
+
+      - name: Lint
+        run: |
+          pre-commit run --all-files
+
+
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: [3.9]
+        include:
+          - os: ubuntu-latest
+            CACHE_PIP: ~/.cache/pip
+            CACHE_POETRY: ~/.cache/poetry
+          - os: windows-latest
+            CACHE_PIP: ~\AppData\Local\pip\Cache
+            CACHE_POETRY: ~\AppData\Local\poetry\Cache
+          - os: macos-latest
+            CACHE_PIP: ~/Library/Caches/pip
+            CACHE_POETRY: ~/Library/Caches/poetry
+
+    name: Test
+    runs-on: ${{ matrix.os }}
+    needs: lint
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: ${{ matrix.python }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ matrix.CACHE_PIP }}
+            ${{ matrix.CACHE_POETRY }}
+          key: test-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('**/pyproject.toml')
+            }}
+          restore-keys: |
+            test-${{ runner.os }}-${{ matrix.python }}-
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+
+      - name: Collect Environment
+        run: |
+          echo "PYTHON=$(python -c 'import platform; print(platform.python_version())')" >> $GITHUB_ENV
+          echo "OS=$(python dev/os_version.py)" >> $GITHUB_ENV
+
+      - name: Test
+        run: |
+          poetry run pytest --verbose --numprocesses=auto --cov=src --cov-report=xml
+
+      - name: Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          env_vars: OS, PYTHON
+
+  docs:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python: [3.9]
+        include:
+          - os: ubuntu-latest
+            CACHE_PIP: ~/.cache/pip
+            CACHE_POETRY: ~/.cache/poetry
+
+    name: Documentation
+    runs-on: ${{ matrix.os }}
+    needs: test
+    permissions:
+      contents: write
+
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ matrix.CACHE_PIP }}
+            ${{ matrix.CACHE_POETRY }}
+          key: docs-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('**/pyproject.toml')
+            }}
+          restore-keys: |
+            docs-${{ runner.os }}-${{ matrix.python }}-
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+
+      - name: Generate Documentation
+        run: |
+          poetry run mkdocs build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: site
