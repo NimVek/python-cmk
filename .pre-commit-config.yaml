@@ -98,6 +98,8 @@ repos:
     rev: v0.950
     hooks:
       - id: mypy
+        additional_dependencies:
+          - types-requests
 
   - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
     rev: 0.2.1
