@@ -15,7 +15,7 @@
     
     
       
-        <title>cmk - python-cmk</title>
+        <title>cmk.httpapi - python-cmk</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cmk" class="md-skip">
+        <a href="#cmkhttpapi" class="md-skip">
           Skip to content
         </a>
       
@@ -100,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              cmk
+              cmk.httpapi
             
           </span>
         </div>
@@ -481,7 +481,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/NimVek/python-cmk/edit/master/docs/api/source/cmk.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/NimVek/python-cmk/edit/master/docs/api/source/cmk.httpapi.md" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
@@ -490,24 +490,89 @@
 <div class="mkapi-node">
 <h1 id="" class="mkapi-object mkapi-object-code plain">
 <span class="mkapi-object-kind mkapi-object-kind-code">SOURCE CODE</span>
-<span class="mkapi-object-name">cmk</span>
-<span id="cmk"></span><a class="mkapi-docs-link" href="../../cmk">DOCS</a>
+<span class="mkapi-object-prefix">cmk.</span><span class="mkapi-object-name">httpapi</span>
+<span id="cmk.httpapi"></span><a class="mkapi-docs-link" href="../../cmk.httpapi">DOCS</a>
 </h1>
 
 <div class="mkapi-code">
-<div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Top-level package for python-cmk.&quot;&quot;&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot;HTTPAPI for python-cmk.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">.__about__</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">__author__</span><span class="p">,</span>
-    <span class="n">__email__</span><span class="p">,</span>
-    <span class="n">__license__</span><span class="p">,</span>
-    <span class="n">__summary__</span><span class="p">,</span>
-    <span class="n">__title__</span><span class="p">,</span>
-    <span class="n">__uri__</span><span class="p">,</span>
-    <span class="n">__version__</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.httpapi</span> <span class="kn">import</span> <span class="n">HTTPAPI</span>
+<span class="kn">import</span> <span class="nn">ast</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">common</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+
+<span class="n">__log__</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">HTTPAPI</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">secret</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">common</span><span class="o">.</span><span class="n">path_ca_bundle</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">path_ca_bundle</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">cleanup_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;_username&quot;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span>
+            <span class="s2">&quot;_secret&quot;</span><span class="p">:</span> <span class="n">secret</span><span class="p">,</span>
+            <span class="s2">&quot;request_format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;output_format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ioformat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ioformat</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;request_format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ioformat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">)</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;output_format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ioformat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;request_format&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;request=</span><span class="si">{</span><span class="n">data</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">+</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">+</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ERROR: &quot;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;output_format&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view_name</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;limit: soft|hard|none&quot;&quot;&quot;</span>
+        <span class="n">parameter</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;view_name&quot;</span><span class="p">:</span> <span class="n">view_name</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">})</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;view.py&quot;</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+
+    <span class="k">def</span> <span class="nf">webapi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ioformat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;webapi.py&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="n">action</span><span class="p">},</span> <span class="n">data</span><span class="p">,</span> <span class="n">ioformat</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;result_code&quot;</span><span class="p">]:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Checkmk exception: &quot;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">common</span><span class="o">.</span><span class="n">MKError</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="mi">19</span><span class="p">:])</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Unhandled exception: &quot;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="mi">21</span><span class="p">:])</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_rulesets_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">webapi</span><span class="p">(</span><span class="s2">&quot;get_rulesets_info&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_ruleset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">webapi</span><span class="p">(</span>
+            <span class="s2">&quot;get_ruleset&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ruleset_name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">},</span> <span class="n">ioformat</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">}</span>
+        <span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
