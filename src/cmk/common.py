@@ -23,7 +23,7 @@ _CA_BUNDLE_CANDIDATES = [
 ]
 
 
-def path_ca_bundle() -> str | None:
+def path_ca_bundle():
     for candidate in _CA_BUNDLE_CANDIDATES:
         if pathlib.Path(candidate).is_file():
             return candidate
