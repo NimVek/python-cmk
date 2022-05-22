@@ -4,6 +4,8 @@ from __future__ import annotations
 import ast
 import json
 
+from typing import TYPE_CHECKING
+
 import requests
 
 from . import common
@@ -12,6 +14,9 @@ import logging
 
 
 __log__ = logging.getLogger(__name__)
+
+if TYPE_CHECKING:
+    from typing import Literal
 
 
 class HTTPAPI:
@@ -57,9 +62,20 @@ class HTTPAPI:
                     return response.json()
         response.raise_for_status()
 
-    def view(self, view_name, limit="none", **parameter):
-        """limit: soft|hard|none"""
-        parameter.update({"view_name": view_name, "limit": limit})
+    def view(
+        self, view_name: str, limit: Literal["soft", "hard", "none"] = "none", **filters
+    ):
+        """Fetches data from a View.
+
+        Retrieves rows of the view specified by name.
+
+        Args:
+           view_name: Name of the View
+           limit: Limit the amount of results
+           **filters: Filter parameters
+        """
+        parameter = {"view_name": view_name, "limit": limit}
+        parameter.update(filters)
         result = self._request("view.py", parameter)
         header = result[0]
         return [dict(zip(header, row)) for row in result[1:]]
