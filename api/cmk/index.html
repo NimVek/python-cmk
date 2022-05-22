@@ -37,11 +37,7 @@
       
     
     
-      <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
-    
-      <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
-    
-      <link rel="stylesheet" href="../../css/mkapi-common.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
     <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -340,10 +336,16 @@
       
       
       
-        <label class="md-nav__link" for="__nav_4_1">
-          cmk
-          <span class="md-nav__icon md-icon"></span>
-        </label>
+        
+        
+        <div class="md-nav__link md-nav__link--index md-nav__link--active">
+          <a href="./">cmk</a>
+          
+            <label for="__nav_4_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
       
       <nav class="md-nav" aria-label="cmk" data-md-level="2">
         <label class="md-nav__title" for="__nav_4_1">
@@ -356,72 +358,10 @@
               
   
   
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          cmk
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        cmk
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#cmkhttpapi" class="md-nav__link">
-    httpapi
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cmkcommon" class="md-nav__link">
-    common
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
   
     <li class="md-nav__item">
-      <a href="../cmk.httpapi/" class="md-nav__link">
-        cmk.httpapi
+      <a href="__about__/" class="md-nav__link">
+        __about__
       </a>
     </li>
   
@@ -434,8 +374,36 @@
   
   
     <li class="md-nav__item">
-      <a href="../cmk.common/" class="md-nav__link">
-        cmk.common
+      <a href="_version/" class="md-nav__link">
+        _version
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="common/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="httpapi/" class="md-nav__link">
+        httpapi
       </a>
     </li>
   
@@ -520,8 +488,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -530,16 +496,63 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#cmkhttpapi" class="md-nav__link">
-    httpapi
+  <a href="#cmk" class="md-nav__link">
+    cmk
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cmkcommon" class="md-nav__link">
+  <a href="#cmk.__about__" class="md-nav__link">
+    __about__
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmk._version" class="md-nav__link">
+    _version
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmk.common" class="md-nav__link">
     common
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmk.httpapi" class="md-nav__link">
+    httpapi
+  </a>
+  
+    <nav class="md-nav" aria-label="httpapi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmk.httpapi.HTTPAPI" class="md-nav__link">
+    HTTPAPI
+  </a>
+  
+    <nav class="md-nav" aria-label="HTTPAPI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmk.httpapi.HTTPAPI.view" class="md-nav__link">
+    view()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -555,77 +568,434 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/NimVek/python-cmk/edit/master/docs/api/cmk.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/NimVek/edit/master/docs/src/cmk/__init__.py" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
 
-<div class="mkapi-node" id="cmk">
-<div class='mkapi-object-container'>
-  <div class="mkapi-object package plain top">
-    <div class="mkapi-object-kind package top">package</div>
-    <h1 id="cmk" class="mkapi-object-body package top"><span class="mkapi-object-name">cmk</span></h1>
+  <h1>cmk</h1>
+
+<div class="doc doc-object doc-module">
+
+<a id="cmk"></a>
+    <div class="doc doc-contents first">
+
+      <p>Top-level package for python-cmk.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+
+<h2 id="cmk.__about__" class="doc doc-heading">
+        <code>__about__</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Provides python-cmk various information.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   </div>
-  <div class="mkapi-src-link">
-    <a class="mkapi-src-link" href="../source/cmk/#cmk" title="Source for cmk">&lt;/&gt;</a>
-  </div>
-</div>
-<div class="mkapi-docstring">
-<div class="mkapi-section">
-      <div class="mkapi-section-body"><p>Top-level package for python-cmk.</p></div>
+
     </div>
+
   </div>
 
-</div>
 
-<div class="mkapi-node" id="cmk.httpapi">
-<div class='mkapi-object-container'>
-  <div class="mkapi-object module plain top">
-    <div class="mkapi-object-kind module top">module</div>
-    <h2 id="cmkhttpapi" class="mkapi-object-body module top"><span class="mkapi-object-prefix"><a href="#cmk">cmk</a>.</span><span class="mkapi-object-name"><a href="../cmk.httpapi/#cmk.httpapi">httpapi</a></span></h2>
+
+  <div class="doc doc-object doc-module">
+
+
+
+<h2 id="cmk._version" class="doc doc-heading">
+        <code>_version</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Provides cmk version information.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
   </div>
-  <div class="mkapi-src-link">
-    <a class="mkapi-src-link" href="../source/cmk.httpapi/#cmk.httpapi" title="Source for cmk.httpapi">&lt;/&gt;</a>
-  </div>
-</div>
-<div class="mkapi-docstring">
-<div class="mkapi-section">
-      <div class="mkapi-section-body"><p>HTTPAPI for python-cmk.</p></div>
+
     </div>
+
   </div>
 
-</div>
 
-<div class="mkapi-node" id="cmk.common">
-<div class='mkapi-object-container'>
-  <div class="mkapi-object module plain top">
-    <div class="mkapi-object-kind module top">module</div>
-    <h2 id="cmkcommon" class="mkapi-object-body module top"><span class="mkapi-object-prefix"><a href="#cmk">cmk</a>.</span><span class="mkapi-object-name"><a href="../cmk.common/#cmk.common">common</a></span></h2>
+
+  <div class="doc doc-object doc-module">
+
+
+
+<h2 id="cmk.common" class="doc doc-heading">
+        <code>common</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Common definitions for python-cmk.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   </div>
-  <div class="mkapi-src-link">
-    <a class="mkapi-src-link" href="../source/cmk.common/#cmk.common" title="Source for cmk.common">&lt;/&gt;</a>
-  </div>
-</div>
-<div class="mkapi-docstring">
-<div class="mkapi-section">
-      <div class="mkapi-section-body"><p>Common definitions for python-cmk.</p></div>
+
     </div>
-  <div class="mkapi-section classes">
-      <div class="mkapi-section-name classes">
-          <span class="mkapi-section-name-body classes">Classes</span> 
-        </div>
-      <div class="mkapi-section-body classes"><ul class="mkapi-items">
-<li class="class"><code class="mkapi-item-name"><a href="../cmk.common#cmk.common.MKError">MKError</a></code>
 
-<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">Common base class for all non-exit exceptions.<a class="mkapi-src-link" href="../source/cmk.common/#cmk.common.MKError" title="Source for cmk.common.MKError">&lt;/&gt;</a></span></li>
-
-
-</ul></div>
-    </div>
   </div>
 
-</div>
+
+
+  <div class="doc doc-object doc-module">
+
+
+
+<h2 id="cmk.httpapi" class="doc doc-heading">
+        <code>httpapi</code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>HTTPAPI for python-cmk.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="cmk.httpapi.HTTPAPI" class="doc doc-heading">
+          <code>HTTPAPI</code>
+
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+
+
+          <details class="quote">
+            <summary>Source code in <code>cmk/httpapi.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HTTPAPI</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">secret</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">common</span><span class="o">.</span><span class="n">path_ca_bundle</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">path_ca_bundle</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">cleanup_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;_username&quot;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span>
+            <span class="s2">&quot;_secret&quot;</span><span class="p">:</span> <span class="n">secret</span><span class="p">,</span>
+            <span class="s2">&quot;request_format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;output_format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ioformat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ioformat</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;request_format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ioformat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">)</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;output_format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ioformat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;request_format&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">+</span> <span class="n">url</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span>
+                <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">+</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ERROR: &quot;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;output_format&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view_name</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;limit: soft|hard|none&quot;&quot;&quot;</span>
+        <span class="n">parameter</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;view_name&quot;</span><span class="p">:</span> <span class="n">view_name</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">})</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;view.py&quot;</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+
+    <span class="k">def</span> <span class="nf">webapi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ioformat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;webapi.py&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="n">action</span><span class="p">},</span> <span class="n">data</span><span class="p">,</span> <span class="n">ioformat</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;result_code&quot;</span><span class="p">]:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Checkmk exception: &quot;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">common</span><span class="o">.</span><span class="n">MKError</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="mi">19</span><span class="p">:])</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Unhandled exception: &quot;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="mi">21</span><span class="p">:])</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_rulesets_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">webapi</span><span class="p">(</span><span class="s2">&quot;get_rulesets_info&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_ruleset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">webapi</span><span class="p">(</span>
+            <span class="s2">&quot;get_ruleset&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ruleset_name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">},</span> <span class="n">ioformat</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_ruleset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ruleset</span><span class="p">,</span> <span class="n">configuration_hash</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ruleset_name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;ruleset&quot;</span><span class="p">:</span> <span class="n">ruleset</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">configuration_hash</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;configuration_hash&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">configuration_hash</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">webapi</span><span class="p">(</span><span class="s2">&quot;set_ruleset&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">ioformat</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">})</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h4 id="cmk.httpapi.HTTPAPI.view" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">view</span><span class="p">(</span><span class="n">view_name</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">)</span></code>
+
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+      <p>limit: soft|hard|none</p>
+
+        <details class="quote">
+          <summary>Source code in <code>cmk/httpapi.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view_name</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;limit: soft|hard|none&quot;&quot;&quot;</span>
+    <span class="n">parameter</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;view_name&quot;</span><span class="p">:</span> <span class="n">view_name</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">})</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;view.py&quot;</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
 
               
             </article>
@@ -655,13 +1025,13 @@
       
       
         
-        <a href="../cmk.httpapi/" class="md-footer__link md-footer__link--next" aria-label="Next: cmk.httpapi" rel="next">
+        <a href="__about__/" class="md-footer__link md-footer__link--next" aria-label="Next: __about__" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              cmk.httpapi
+              __about__
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -695,8 +1065,6 @@
     
     
       <script src="../../assets/javascripts/bundle.a6c66575.min.js"></script>
-      
-        <script src="../../js/mkapi.js"></script>
       
     
   </body>
