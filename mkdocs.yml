@@ -12,16 +12,31 @@ nav                :
   - Contributing:
       - Guide: CONTRIBUTING.md
       - Code of Conduct: CODE_OF_CONDUCT.md
-  - API: mkapi/api/src/cmk|strict
+  - API: api/
   - About:
       - License: LICENSE.md
 
 plugins            :
   - search
-  - mkapi
-  - mkdocs-simple-hooks:
-      hooks:
-        on_pre_build: dev.mkdocs:on_pre_build
+  - gen-files:
+      scripts:
+        - dev/mkdocs.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - section-index
+  - mkdocstrings:
+      handlers:
+        python:
+          import:
+            - https://docs.python.org/3/objects.inv
+          options:
+            docstring_style: google
+            docstring_options:
+              ignore_init_summary: yes
+            merge_init_into_class: yes
+            show_submodules: no
+      watch:
+        - src/cmk
 
 markdown_extensions:
   - admonition
