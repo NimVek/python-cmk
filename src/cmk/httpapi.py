@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import ast
+import json
 
 import requests
 
@@ -33,9 +34,14 @@ class HTTPAPI:
             params["output_format"] = ioformat.get("output", "json")
         if data:
             if params["request_format"] == "python":
-                data = f"request={data!r}"
+                data = repr(data)
+            else:
+                data = json.dumps(data)
             response = self._session.post(
-                self._url + url, params=params, data=data, allow_redirects=False
+                self._url + url,
+                params=params,
+                data={"request": data},
+                allow_redirects=False,
             )
         else:
             response = self._session.get(
@@ -76,3 +82,9 @@ class HTTPAPI:
         return self.webapi(
             "get_ruleset", data={"ruleset_name": name}, ioformat={"output": "python"}
         )
+
+    def set_ruleset(self, name, ruleset, configuration_hash=None):
+        data = {"ruleset_name": name, "ruleset": ruleset}
+        if configuration_hash:
+            data["configuration_hash"] = configuration_hash
+        self.webapi("set_ruleset", data=data, ioformat={"input": "python"})
