@@ -368,8 +368,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cmk.common/" class="md-nav__link">
-        cmk.common
+      <a href="../../cmk.httpapi/" class="md-nav__link">
+        cmk.httpapi
       </a>
     </li>
   
@@ -382,8 +382,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cmk.httpapi/" class="md-nav__link">
-        cmk.httpapi
+      <a href="../../cmk.common/" class="md-nav__link">
+        cmk.common
       </a>
     </li>
   
@@ -499,6 +499,7 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
 
@@ -530,9 +531,14 @@
             <span class="n">params</span><span class="p">[</span><span class="s2">&quot;output_format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ioformat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;request_format&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;request=</span><span class="si">{</span><span class="n">data</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">+</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">+</span> <span class="n">url</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span>
+                <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
@@ -573,6 +579,12 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">webapi</span><span class="p">(</span>
             <span class="s2">&quot;get_ruleset&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ruleset_name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">},</span> <span class="n">ioformat</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">}</span>
         <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_ruleset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ruleset</span><span class="p">,</span> <span class="n">configuration_hash</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ruleset_name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;ruleset&quot;</span><span class="p">:</span> <span class="n">ruleset</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">configuration_hash</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;configuration_hash&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">configuration_hash</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">webapi</span><span class="p">(</span><span class="s2">&quot;set_ruleset&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">ioformat</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">})</span>
 </code></pre></div>
 </div>
 </div>
