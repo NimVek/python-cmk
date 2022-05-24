@@ -13,6 +13,14 @@ class MKError(Exception):
     pass
 
 
+class MKRESTError(Exception):
+    def __init__(self, response):
+        self._response = response
+
+    def __getattr__(self, item):
+        return self._response[item]
+
+
 _CA_BUNDLE_CANDIDATES = [
     "/etc/ssl/certs/ca-certificates.crt",  # Debian/Ubuntu/Gentoo etc.
     "/etc/pki/tls/certs/ca-bundle.crt",  # Fedora/RHEL 6
@@ -23,7 +31,7 @@ _CA_BUNDLE_CANDIDATES = [
 ]
 
 
-def path_ca_bundle():
+def path_ca_bundle() -> str | None:
     for candidate in _CA_BUNDLE_CANDIDATES:
         if pathlib.Path(candidate).is_file():
             return candidate

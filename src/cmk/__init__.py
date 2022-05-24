@@ -11,3 +11,4 @@ from .__about__ import (
     __version__,
 )
 from .httpapi import HTTPAPI
+from .restapi import RESTAPI
