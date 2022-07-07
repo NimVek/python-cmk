@@ -87,11 +87,9 @@ class RESTAPI:
             data=parameter,
         )
 
-    create_object = partialmethod(
-        _type_collection, method="POST", collection_name="all"
-    )
+    create_object = partialmethod(_type_collection, "POST", collection_name="all")
 
-    show_object = partialmethod(_object, method="GET")
+    show_object = partialmethod(_object, "GET")
 
     def delete_object(self, domain_type, identifier, etag=None):
         if etag is None:
