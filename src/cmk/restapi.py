@@ -54,28 +54,28 @@ class RESTAPI:
         return self._request(
             method,
             f"/domain-types/{domain_type}/actions/{action}/invoke",
-            data=parameter,
+            **parameter,
         )
 
     def _type_collection(self, method, domain_type, collection_name="all", **parameter):
         return self._request(
             method,
             f"/domain-types/{domain_type}/collections/{collection_name}",
-            data=parameter,
+            **parameter,
         )
 
     def _object(self, method, domain_type, identifier, **parameter):
         return self._request(
             method,
             f"/objects/{domain_type}/{identifier}",
-            data=parameter,
+            **parameter,
         )
 
     def _object_action(self, method, domain_type, identifier, action, **parameter):
         return self._request(
             method,
             f"/objects/{domain_type}/{identifier}/actions/{action}/invoke",
-            data=parameter,
+            **parameter,
         )
 
     def _object_collection(
@@ -84,7 +84,7 @@ class RESTAPI:
         return self._request(
             method,
             f"/objects/{domain_type}/{identifier}/collections/{collection_name}",
-            data=parameter,
+            **parameter,
         )
 
     create_object = partialmethod(_type_collection, "POST", collection_name="all")
