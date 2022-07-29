@@ -52,10 +52,10 @@ jobs:
           pre-commit run --all-files
 
 
-  test:
+  test-simple:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [windows-latest, macos-latest]
         python: [3.9]
         include:
           - os: ubuntu-latest
@@ -64,8 +64,74 @@ jobs:
           - os: windows-latest
             CACHE_PIP: ~\AppData\Local\pip\Cache
             CACHE_POETRY: ~\AppData\Local\poetry\Cache
+          - os: macos-latest
+            CACHE_PIP: ~/Library/Caches/pip
+            CACHE_POETRY: ~/Library/Caches/poetry
 
-    name: Test
+    name: Test (simple)
+    runs-on: ${{ matrix.os }}
+    needs: lint
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: ${{ matrix.python }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ matrix.CACHE_PIP }}
+            ${{ matrix.CACHE_POETRY }}
+          key: test-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('**/pyproject.toml')
+            }}
+          restore-keys: |
+            test-${{ runner.os }}-${{ matrix.python }}-
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+
+      - name: Collect Environment
+        run: |
+          echo "PYTHON=$(python -c 'import platform; print(platform.python_version())')" >> $GITHUB_ENV
+          echo "OS=$(python dev/os_version.py)" >> $GITHUB_ENV
+
+      - name: Test
+        run: |
+          poetry run pytest -m "not docker" --verbose --numprocesses=auto --cov=src --cov-report=xml
+
+      - name: Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          env_vars: OS, PYTHON
+
+  test-full:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python: [3.9]
+        include:
+          - os: ubuntu-latest
+            CACHE_PIP: ~/.cache/pip
+            CACHE_POETRY: ~/.cache/poetry
+          - os: windows-latest
+            CACHE_PIP: ~\AppData\Local\pip\Cache
+            CACHE_POETRY: ~\AppData\Local\poetry\Cache
+          - os: macos-latest
+            CACHE_PIP: ~/Library/Caches/pip
+            CACHE_POETRY: ~/Library/Caches/poetry
+
+    name: Test (full)
     runs-on: ${{ matrix.os }}
     needs: lint
     env:
@@ -132,7 +198,7 @@ jobs:
 
     name: Documentation
     runs-on: ${{ matrix.os }}
-    needs: test
+    needs: test-simple, test-full
     permissions:
       contents: write
 
