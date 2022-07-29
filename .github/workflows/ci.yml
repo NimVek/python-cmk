@@ -198,7 +198,7 @@ jobs:
 
     name: Documentation
     runs-on: ${{ matrix.os }}
-    needs: test-simple, test-full
+    needs: [test-simple, test-full]
     permissions:
       contents: write
 
