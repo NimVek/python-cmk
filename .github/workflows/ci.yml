@@ -55,7 +55,7 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest]
         python: [3.9]
         include:
           - os: ubuntu-latest
@@ -64,9 +64,6 @@ jobs:
           - os: windows-latest
             CACHE_PIP: ~\AppData\Local\pip\Cache
             CACHE_POETRY: ~\AppData\Local\poetry\Cache
-          - os: macos-latest
-            CACHE_PIP: ~/Library/Caches/pip
-            CACHE_POETRY: ~/Library/Caches/poetry
 
     name: Test
     runs-on: ${{ matrix.os }}
