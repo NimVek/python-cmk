@@ -1,3 +1,0 @@
----
-fixes:
-  - 'src/::'        # reduce root e.g., "src/project/" => "project/"
