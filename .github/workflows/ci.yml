@@ -58,9 +58,6 @@ jobs:
         os: [windows-latest, macos-latest]
         python: [3.9]
         include:
-          - os: ubuntu-latest
-            CACHE_PIP: ~/.cache/pip
-            CACHE_POETRY: ~/.cache/poetry
           - os: windows-latest
             CACHE_PIP: ~\AppData\Local\pip\Cache
             CACHE_POETRY: ~\AppData\Local\poetry\Cache
@@ -124,12 +121,6 @@ jobs:
           - os: ubuntu-latest
             CACHE_PIP: ~/.cache/pip
             CACHE_POETRY: ~/.cache/poetry
-          - os: windows-latest
-            CACHE_PIP: ~\AppData\Local\pip\Cache
-            CACHE_POETRY: ~\AppData\Local\poetry\Cache
-          - os: macos-latest
-            CACHE_PIP: ~/Library/Caches/pip
-            CACHE_POETRY: ~/Library/Caches/poetry
 
     name: Test (full)
     runs-on: ${{ matrix.os }}
