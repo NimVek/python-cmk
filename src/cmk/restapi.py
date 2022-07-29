@@ -50,40 +50,49 @@ class RESTAPI:
             etag = json.loads(response.headers.get("ETag", "null"))
             return result, etag
 
-    def _type_action(self, method, domain_type, action, **parameter):
+    def _type_action(self, method, domain_type, action, etag=None, **parameter):
         return self._request(
             method,
             f"/domain-types/{domain_type}/actions/{action}/invoke",
+            etag=etag,
             data=parameter,
         )
 
-    def _type_collection(self, method, domain_type, collection_name="all", **parameter):
+    def _type_collection(
+        self, method, domain_type, collection_name="all", etag=None, **parameter
+    ):
         return self._request(
             method,
             f"/domain-types/{domain_type}/collections/{collection_name}",
+            etag=etag,
             data=parameter,
         )
 
-    def _object(self, method, domain_type, identifier, **parameter):
+    def _object(self, method, domain_type, identifier, etag=None, **parameter):
         return self._request(
             method,
             f"/objects/{domain_type}/{identifier}",
+            etag=etag,
             data=parameter,
         )
 
-    def _object_action(self, method, domain_type, identifier, action, **parameter):
+    def _object_action(
+        self, method, domain_type, identifier, action, etag=None, **parameter
+    ):
         return self._request(
             method,
             f"/objects/{domain_type}/{identifier}/actions/{action}/invoke",
+            etag=etag,
             data=parameter,
         )
 
     def _object_collection(
-        self, method, domain_type, identifier, collection_name, **parameter
+        self, method, domain_type, identifier, collection_name, etag=None, **parameter
     ):
         return self._request(
             method,
             f"/objects/{domain_type}/{identifier}/collections/{collection_name}",
+            etag=etag,
             data=parameter,
         )
 
