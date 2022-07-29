@@ -136,4 +136,3 @@ GitPython = "^3.1.27"
 pythonpath = [ "src" ]
 markers = [ "docker" ]
 log_cli = true
-addopts = [ "-m", "not docker" ]
