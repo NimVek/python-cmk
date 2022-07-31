@@ -3,7 +3,7 @@ import pytest
 import cmk
 
 
-pytestmark = [pytest.mark.docker]
+pytestmark = [pytest.mark.docker, pytest.mark.xdist_group("docker")]
 
 
 def test_httpapi():
