@@ -90,8 +90,10 @@ class Object(abc.ABC):
     def push(self):
         extensions = {}
         for key, value in self._extensions.items():
-            old_value = self.prepare_extension(key, self._value["extensions"].get(key))
-            new_value = self.prepare_extension(key, value)
+            old_value = self._serialize_extension(
+                key, self._value["extensions"].get(key)
+            )
+            new_value = self._serialize_extension(key, value)
             if new_value != old_value:
                 extensions[key] = new_value
         if extensions:
@@ -109,8 +111,8 @@ class Object(abc.ABC):
     def set_extension(self, name, value):
         self._extensions[name] = value
 
-    def prepare_extension(self, name, value):
-        return value
+    def _serialize_extension(self, name, value):
+        return serialize(value)
 
     def __bool__(self):
         try:
@@ -121,6 +123,13 @@ class Object(abc.ABC):
             else:
                 return False
         return True
+
+    def __eq__(self, other):
+        if isinstance(other, Object):
+            return self.identifier == other.identifier
+        elif isinstance(other, str):
+            return self.identifier == other
+        return NotImplemented
 
     def __enter__(self):
         return self

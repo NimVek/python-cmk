@@ -22,10 +22,18 @@ class ObjectAPI:
         self._restapi = RESTAPI(url, user, password)
         self._httpapi = HTTPAPI(url, user, password)
 
-        self.domain_types = {}
         self.root = objects.Folder(self, "~")
-        self.add_domain_type(objects.Host)
-        self.add_domain_type(objects.Folder, parent=self.root)
+
+        self.domain_types = {}
+        self.add_domain_type(objects.User)
+
+    @property
+    def Folder(self):  # noqa: N802
+        return self.root.Folder
+
+    @property
+    def Host(self):  # noqa: N802
+        return self.root.Host
 
     @property
     def rest(self):
@@ -43,3 +51,10 @@ class ObjectAPI:
             return self.domain_types[name]
         except KeyError:
             raise AttributeError
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, typ, value, traceback):
+        if typ is None:
+            pass  # todo: activate

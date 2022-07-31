@@ -20,12 +20,10 @@ class Attributes(base.Object):
         return self.attributes.get(name, default)
 
     def set_attribute(self, name, value):
-        attributes = self.attributes.copy()
         if value is None:
-            attributes.pop(name, None)
+            self.attributes.pop(name, None)
         else:
-            attributes[name] = value
-        self.set_extension("attributes", attributes)
+            self.attributes[name] = value
 
     @property
     def labels(self):
@@ -42,13 +40,31 @@ class Attributes(base.Object):
             labels[name] = value
         self.set_attribute("labels", labels)
 
-    def prepare_extension(self, name, value):
+    def _serialize_extension(self, name, value):
         if name == "attributes":
             value = value.copy()
             value.pop("meta_data", None)
 
-        return super().prepare_extension(name, value)
+        return super()._serialize_extension(name, value)
 
 
 class EffectiveAttributes(Attributes):
     show = partialmethod(Attributes.show, effective_attributes=True)
+
+    @property
+    def effective_attributes(self):
+        return self.extension("effective_attributes", {})
+
+    def effective_attribute(self, name, default=None):
+        return self.effective_attributes.get(name, default)
+
+    def set_effective_attribute(self, name, value):
+        if self.effective_attribute(name) != value:
+            self.effective_attributes[name] = value
+            self.set_attribute(name, value)
+
+    def _serialize_extension(self, name, value):
+        if name == "effective_attributes":
+            value = None
+
+        return super()._serialize_extension(name, value)
