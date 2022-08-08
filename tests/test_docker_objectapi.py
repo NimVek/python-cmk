@@ -34,6 +34,12 @@ def test_objectapi(api):
 
     assert subfolder.identifier == "~test_folder~sub"
 
+    test_folder = api.FolderConfig("test_folder").FolderConfig("sub")
+
+    assert test_folder.identifier == "~test_folder~sub"
+
+    assert test_folder
+
     subfolder.delete()
 
     folder.delete()

@@ -22,10 +22,18 @@ class FolderConfig(attributes.Attributes):
                 **parameter,
             )
 
+        def __call__(self, identifier):
+            if not identifier.startswith("~"):
+                identifier = "~" + identifier
+            return super().__call__(identifier)
+
     class ParentService:
         def __init__(self, api, cls, parent):
             self.service = getattr(api, cls.__name__)
             self.parent = parent
+
+        def __call__(self, identifier):
+            return self.service(identifier)
 
         def __getattr__(self, name):
             return getattr(self.service, name)
@@ -38,6 +46,16 @@ class FolderConfig(attributes.Attributes):
                 parent=parent or self.parent,
                 **parameter,
             )
+
+        def __call__(self, identifier):
+            if identifier.startswith("~"):
+                path = identifier
+            else:
+                path = self.parent.identifier
+                if not path.endswith("~"):
+                    path += "~"
+                path += identifier
+            return self.service(path)
 
     class HostParentService(ParentService):
         def create(self, host_name, folder=None, **parameter):
