@@ -9,17 +9,16 @@ import logging
 __log__ = logging.getLogger(__name__)
 
 
-class Host(attributes.EffectiveAttributes):
+class HostConfig(attributes.EffectiveAttributes):
     domain_type = "host_config"
 
     class Service(base.Service):
-        def __init__(self, api, cls, folder):
-            self.folder = folder
-            super().__init__(api, cls)
-
         def create(self, host_name, folder=None, **parameter):
             return super().create(
                 host_name=host_name,
-                folder=folder or self.folder,
+                folder=folder,
                 **parameter,
             )
+
+    def rename(self, new_name):
+        pass

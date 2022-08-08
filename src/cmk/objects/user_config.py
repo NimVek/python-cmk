@@ -9,7 +9,7 @@ import logging
 __log__ = logging.getLogger(__name__)
 
 
-class User(base.Object):
+class UserConfig(base.Object):
     domain_type = "user_config"
 
     class Service(base.Service):

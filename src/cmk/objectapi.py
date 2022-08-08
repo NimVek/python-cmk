@@ -1,7 +1,7 @@
 """Object-API for python-cmk."""
 from __future__ import annotations
 
-from . import objects
+from . import common, objects
 from .httpapi import HTTPAPI
 from .restapi import RESTAPI
 
@@ -22,18 +22,13 @@ class ObjectAPI:
         self._restapi = RESTAPI(url, user, password)
         self._httpapi = HTTPAPI(url, user, password)
 
-        self.root = objects.Folder(self, "~")
-
         self.domain_types = {}
-        self.add_domain_type(objects.User)
+        self.add_domain_type(objects.FolderConfig)
+        self.add_domain_type(objects.HostConfig)
+        self.add_domain_type(objects.UserConfig)
+        self.add_domain_type(objects.ActivationRun)
 
-    @property
-    def Folder(self):  # noqa: N802
-        return self.root.Folder
-
-    @property
-    def Host(self):  # noqa: N802
-        return self.root.Host
+        self.root = objects.FolderConfig(self, "~")
 
     @property
     def rest(self):
@@ -57,4 +52,8 @@ class ObjectAPI:
 
     def __exit__(self, typ, value, traceback):
         if typ is None:
-            pass  # todo: activate
+            try:
+                self.ActivationRun.start()
+            except common.MKRESTError as e:
+                if e.status != 422:
+                    raise e

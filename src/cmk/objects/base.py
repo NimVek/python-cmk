@@ -37,6 +37,12 @@ class Service(DomainType):
         )
         return self(result["id"])
 
+    def list(self, collection_name="all", **parameter):  # noqa: A003
+        result, _ = self.api.rest.list_objects(
+            self._domain_type, collection_name, **(serialize(parameter))
+        )
+        return [self._cls(self.api, item["id"]) for item in result["value"]]
+
 
 class Object(abc.ABC):
     def __init__(self, api, identifier):

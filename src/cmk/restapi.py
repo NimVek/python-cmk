@@ -110,7 +110,11 @@ class RESTAPI:
             _, etag = self.show_object(domain_type, identifier)
         return self._object("PUT", domain_type, identifier, etag=etag, **parameter)
 
-    def list_objects(self, domain_type, **parameter):
+    def list_objects(self, domain_type, collection_name="all", **parameter):
         return self._type_collection(
-            "GET", domain_type, collection_name="all", **parameter
+            "GET", domain_type, collection_name=collection_name, **parameter
         )
+
+    activate_changes = partialmethod(
+        _type_action, "POST", "activation_run", "activate-changes"
+    )

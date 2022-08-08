@@ -9,8 +9,14 @@ logger = logging.getLogger(__name__)
 pytestmark = [pytest.mark.docker, pytest.mark.xdist_group("docker")]
 
 
-def test_restapi():
+@pytest.fixture
+def api():
     api = cmk.RESTAPI("http://localhost:8080/cmk/", "cmkadmin", "cmkadmin")
+    yield api
+    logger.debug(api.activate_changes())
+
+
+def test_restapi(api):
     api.create_object(
         "folder_config", name="test_folder", title="Test Folder Title", parent="~"
     )
