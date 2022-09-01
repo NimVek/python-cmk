@@ -11,7 +11,6 @@ pytestmark = [pytest.mark.docker, pytest.mark.xdist_group("docker")]
 
 @pytest.fixture
 def api():
-
     with cmk.ObjectAPI("http://localhost:8080/cmk/", "cmkadmin", "cmkadmin") as api:
         yield api
 

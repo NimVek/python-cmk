@@ -11,7 +11,7 @@ pytestmark = [pytest.mark.docker, pytest.mark.xdist_group("docker")]
 
 @pytest.fixture
 def api():
-    api = cmk.RESTAPI("http://localhost:8080/cmk/", "cmkadmin", "cmkadmin")
+    api = cmk.RESTAPI("http://cmkadmin:cmkadmin@localhost:8080/cmk/")
     yield api
     logger.debug(api.activate_changes())
 

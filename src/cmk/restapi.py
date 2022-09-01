@@ -5,27 +5,21 @@ import json
 
 from functools import partialmethod
 
-import requests
-
 from . import common
 
 import logging
 
 
-__log__ = logging.getLogger(__name__)
+__logger__ = logging.getLogger(__name__)
 
 
-class RESTAPI:
-    def __init__(self, url, user, password):
-        self._url = common.cleanup_url(url) + "api/v0"
-        self._session = requests.session()
-        if common.path_ca_bundle():
-            self._session.verify = common.path_ca_bundle()
-        self._session.headers["Authorization"] = f"Bearer {user} {password}"
+class RESTAPI(common.API):
+    def __init__(self, url, user=None, password=None):
+        super().__init__(url, user, password)
+        self._session.base /= "api/v0"
+        self._session.headers["Authorization"] = f"Bearer {self._user} {self._password}"
         self._session.headers["Accept"] = "application/json"
-
-    def __request(self, method, url, **kwargs):
-        return self._session.request(method, self._url + url, **kwargs)
+        __logger__.debug(self._session.headers)
 
     def _request(self, method, url, etag=None, data=None):
         headers = {}
@@ -37,7 +31,7 @@ class RESTAPI:
             _data = data
         if etag:
             headers["If-Match"] = etag
-        with self.__request(
+        with self._session.request(
             method,
             url,
             params=_params,
@@ -53,7 +47,7 @@ class RESTAPI:
     def _type_action(self, method, domain_type, action, etag=None, **parameter):
         return self._request(
             method,
-            f"/domain-types/{domain_type}/actions/{action}/invoke",
+            f"domain-types/{domain_type}/actions/{action}/invoke",
             etag=etag,
             data=parameter,
         )
@@ -63,7 +57,7 @@ class RESTAPI:
     ):
         return self._request(
             method,
-            f"/domain-types/{domain_type}/collections/{collection_name}",
+            f"domain-types/{domain_type}/collections/{collection_name}",
             etag=etag,
             data=parameter,
         )
@@ -71,7 +65,7 @@ class RESTAPI:
     def _object(self, method, domain_type, identifier, etag=None, **parameter):
         return self._request(
             method,
-            f"/objects/{domain_type}/{identifier}",
+            f"objects/{domain_type}/{identifier}",
             etag=etag,
             data=parameter,
         )
@@ -81,7 +75,7 @@ class RESTAPI:
     ):
         return self._request(
             method,
-            f"/objects/{domain_type}/{identifier}/actions/{action}/invoke",
+            f"objects/{domain_type}/{identifier}/actions/{action}/invoke",
             etag=etag,
             data=parameter,
         )
@@ -91,7 +85,7 @@ class RESTAPI:
     ):
         return self._request(
             method,
-            f"/objects/{domain_type}/{identifier}/collections/{collection_name}",
+            f"objects/{domain_type}/{identifier}/collections/{collection_name}",
             etag=etag,
             data=parameter,
         )

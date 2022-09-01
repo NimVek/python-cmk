@@ -6,8 +6,6 @@ import json
 
 from typing import TYPE_CHECKING
 
-import requests
-
 from . import common
 
 import logging
@@ -19,15 +17,12 @@ if TYPE_CHECKING:
     from typing import Literal
 
 
-class HTTPAPI:
-    def __init__(self, url, user, secret):
-        self._session = requests.session()
-        if common.path_ca_bundle():
-            self._session.verify = common.path_ca_bundle()
-        self._url = common.cleanup_url(url)
+class HTTPAPI(common.API):
+    def __init__(self, url, user=None, password=None):
+        super().__init__(url, user, password)
         self._credentials = {
-            "_username": user,
-            "_secret": secret,
+            "_username": self._user,
+            "_secret": self._password,
             "request_format": "json",
             "output_format": "json",
         }
@@ -43,15 +38,13 @@ class HTTPAPI:
             else:
                 data = json.dumps(data)
             response = self._session.post(
-                self._url + url,
+                url,
                 params=params,
                 data={"request": data},
                 allow_redirects=False,
             )
         else:
-            response = self._session.get(
-                self._url + url, params=params, allow_redirects=False
-            )
+            response = self._session.get(url, params=params, allow_redirects=False)
         if response:
             if response.text.startswith("ERROR: "):
                 raise ValueError(response.text[7:])
