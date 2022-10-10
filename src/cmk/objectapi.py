@@ -27,6 +27,8 @@ class ObjectAPI:
         self.add_domain_type(objects.HostConfig)
         self.add_domain_type(objects.UserConfig)
         self.add_domain_type(objects.ActivationRun)
+        self.add_domain_type(objects.Ruleset)
+        self.add_domain_type(objects.Rule)
 
         self.root = objects.FolderConfig(self, "~")
 
