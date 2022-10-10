@@ -29,6 +29,7 @@ class ObjectAPI:
         self.add_domain_type(objects.ActivationRun)
         self.add_domain_type(objects.Ruleset)
         self.add_domain_type(objects.Rule)
+        self.add_domain_type(objects.ContactGroupConfig)
 
         self.root = objects.FolderConfig(self, "~")
 
