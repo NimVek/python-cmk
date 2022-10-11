@@ -18,7 +18,7 @@ def all_subclasses(cls):
 
 
 class ObjectAPI:
-    def __init__(self, url, user, password):
+    def __init__(self, url, user=None, password=None):
         self._restapi = RESTAPI(url, user, password)
         self._httpapi = HTTPAPI(url, user, password)
 
