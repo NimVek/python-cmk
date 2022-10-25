@@ -89,7 +89,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-incremental = "^21.3.0"
+incremental = "^22.10.0"
 python = "^3.9"
 requests = "^2.28.1"
 furl = "^2.1.3"
