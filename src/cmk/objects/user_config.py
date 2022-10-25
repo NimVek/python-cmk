@@ -9,10 +9,10 @@ import logging
 __log__ = logging.getLogger(__name__)
 
 
-class UserConfig(base.Object):
+class UserConfig(base.ConfigObject):
     domain_type = "user_config"
 
-    class Service(base.Service):
+    class Service(base.ConfigService):
         def create(self, username, fullname=None, **parameter):
             return super().create(
                 username=username,

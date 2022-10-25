@@ -12,7 +12,7 @@ __log__ = logging.getLogger(__name__)
 class HostConfig(attributes.EffectiveAttributes):
     domain_type = "host_config"
 
-    class Service(base.Service):
+    class Service(base.ConfigService):
         def create(self, host_name, folder=None, **parameter):
             return super().create(
                 host_name=host_name,

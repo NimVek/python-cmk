@@ -9,10 +9,10 @@ import logging
 __log__ = logging.getLogger(__name__)
 
 
-class ContactGroupConfig(base.Object):
+class ContactGroupConfig(base.ConfigObject):
     domain_type = "contact_group_config"
 
-    class Service(base.Service):
+    class Service(base.ConfigService):
         def create(self, name, alias=None, **parameter):
             return super().create(
                 name=name,

@@ -13,4 +13,4 @@ class Ruleset(base.Object):
     domain_type = "ruleset"
 
     class Service(base.Service):
-        create = None
+        pass

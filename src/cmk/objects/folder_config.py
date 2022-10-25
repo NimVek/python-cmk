@@ -13,7 +13,7 @@ __log__ = logging.getLogger(__name__)
 class FolderConfig(attributes.Attributes):
     domain_type = "folder_config"
 
-    class Service(base.Service):
+    class Service(base.ConfigService):
         def create(self, name, title=None, parent="~", **parameter):
             return super().create(
                 name=name,
