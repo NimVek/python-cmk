@@ -32,6 +32,8 @@ class ObjectAPI:
         self.add_domain_type(objects.ContactGroupConfig)
 
         self.add_domain_type(objects.Service)
+        self.add_domain_type(objects.Host)
+        self.add_domain_type(objects.ServiceDiscovery)
         self.root = objects.FolderConfig(self, "~")
 
     @property
@@ -42,14 +44,12 @@ class ObjectAPI:
     def http(self):
         return self._httpapi
 
-    def add_domain_type(self, cls, **parameter):
-        self.domain_types[cls.__name__] = cls.Service(self, cls, **parameter)
+    def get_service(self, domain_type):
+        return self.domain_types[domain_type]
 
-    def __getattr__(self, name):
-        try:
-            return self.domain_types[name]
-        except KeyError:
-            raise AttributeError
+    def add_domain_type(self, cls, **parameter):
+        self.domain_types[cls.domain_type] = cls.Service(self, cls, **parameter)
+        setattr(self, cls.__name__, self.domain_types[cls.domain_type])
 
     def __enter__(self):
         return self
@@ -57,7 +57,7 @@ class ObjectAPI:
     def __exit__(self, typ, value, traceback):
         if typ is None:
             try:
-                self.ActivationRun.start()
+                self.ActivationRun.activate_changes()  # type: ignore[attr-defined]
             except common.MKRESTError as e:
                 if e.status != 422:
                     raise e

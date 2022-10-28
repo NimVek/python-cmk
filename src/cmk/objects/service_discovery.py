@@ -9,8 +9,8 @@ import logging
 __log__ = logging.getLogger(__name__)
 
 
-class Service(dictionary.Dictionary):
-    domain_type = "service"
+class ServiceDiscovery(dictionary.Dictionary):
+    domain_type = "service_discovery"
 
     class Service(base.ReadOnlyService):
         pass

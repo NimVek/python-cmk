@@ -11,10 +11,10 @@ import logging
 __log__ = logging.getLogger(__name__)
 
 
-class Rule(base.ConfigObject):
+class Rule(base.ReadWriteObject):
     domain_type = "rule"
 
-    class Service(base.ConfigService):
+    class Service(base.ReadWriteService):
         def create(
             self,
             ruleset,

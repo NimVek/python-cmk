@@ -11,7 +11,7 @@ import logging
 __log__ = logging.getLogger(__name__)
 
 
-class Attributes(base.ConfigObject):
+class Attributes(base.ReadWriteObject):
     @property
     def attributes(self):
         return self.extension("attributes", {})

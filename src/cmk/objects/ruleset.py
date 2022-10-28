@@ -9,8 +9,8 @@ import logging
 __log__ = logging.getLogger(__name__)
 
 
-class Ruleset(base.Object):
+class Ruleset(base.ReadOnlyObject):
     domain_type = "ruleset"
 
-    class Service(base.Service):
+    class Service(base.ReadOnlyService):
         pass

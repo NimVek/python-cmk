@@ -9,12 +9,12 @@ import logging
 __log__ = logging.getLogger(__name__)
 
 
-class ActivationRun(base.Object):
+class ActivationRun(base.ReadOnlyObject):
     domain_type = "activation_run"
 
-    class Service(base.Service):
-        def start(self, **parameter):
-            result = self.api.rest.activate_changes(**parameter)
+    class Service(base.ReadOnlyService):
+        def activate_changes(self, **parameter):
+            result = self._action("POST", "activate-changes", **parameter)
             __log__.debug(result)
             if not parameter.get("redirect"):
-                return self(result[0].get("id"))
+                return self.from_value(*result)
