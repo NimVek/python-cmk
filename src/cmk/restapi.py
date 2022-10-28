@@ -18,7 +18,7 @@ class RESTAPI(common.API):
         super().__init__(url, user, password)
         self._session.base /= "api/v0"
         self._session.headers["Authorization"] = f"Bearer {self._user} {self._password}"
-        self._session.headers["Accept"] = "application/json"
+        #        self._session.headers["Accept"] = "application/json"
         __logger__.debug(self._session.headers)
 
     def _request(self, method, url, etag=None, data=None):
@@ -40,7 +40,12 @@ class RESTAPI(common.API):
         ) as response:
             if not response:
                 raise common.MKRESTError(response.json())
-            result = response.json() if response.status_code != 204 else None
+            if response.headers.get("Content-Type") == "application/json":
+                result = response.json()
+            elif response.encoding:
+                resutl = response.text
+            else:
+                result = response.content
             etag = json.loads(response.headers.get("ETag", "null"))
             return result, etag
 

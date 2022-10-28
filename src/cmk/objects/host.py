@@ -8,8 +8,6 @@ import logging
 
 __log__ = logging.getLogger(__name__)
 
-import pprint
-
 
 class Host(dictionary.Dictionary):
     domain_type = "host"

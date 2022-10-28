@@ -51,6 +51,10 @@ class ObjectAPI:
         self.domain_types[cls.domain_type] = cls.Service(self, cls, **parameter)
         setattr(self, cls.__name__, self.domain_types[cls.domain_type])
 
+    def from_value(self, value, etag=None):
+        service = self.get_service(value["domainType"])
+        return service.from_value(value, etag)
+
     def __enter__(self):
         return self
 

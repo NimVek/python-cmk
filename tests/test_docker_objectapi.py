@@ -5,7 +5,7 @@ import cmk
 import logging
 
 
-logger = logging.getLogger(__name__)
+__logger__ = logging.getLogger(__name__)
 pytestmark = [pytest.mark.docker, pytest.mark.xdist_group("docker")]
 
 
