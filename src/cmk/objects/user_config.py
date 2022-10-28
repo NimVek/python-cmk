@@ -17,5 +17,5 @@ class UserConfig(base.ReadWriteObject):
             return super().create(
                 username=username,
                 fullname=fullname or username,
-                **parameter,
+                **(self.api.version.customer_required(parameter)),
             )

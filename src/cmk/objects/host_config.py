@@ -23,4 +23,4 @@ class HostConfig(attributes.EffectiveAttributes):
     def rename(self, new_name):
         result = self._action("PUT", "rename", new_name=new_name)
         __log__.debug(result)
-        return self.from_value(*result)
+        return self.from_object(*result)

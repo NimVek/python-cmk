@@ -21,7 +21,7 @@ class Host(dictionary.Dictionary):
         )
 
     def service(self, service_description):
-        return self.api.Service.from_value(
+        return self.api.Service.from_object(
             *self._action(
                 "GET", "show_service", service_description=service_description
             )

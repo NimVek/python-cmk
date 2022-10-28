@@ -17,4 +17,4 @@ class ActivationRun(base.ReadOnlyObject):
             result = self._action("POST", "activate-changes", **parameter)
             __log__.debug(result)
             if not parameter.get("redirect"):
-                return self.from_value(*result)
+                return self.from_object(*result)

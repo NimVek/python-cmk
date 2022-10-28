@@ -4,6 +4,7 @@ from __future__ import annotations
 import abc
 import collections.abc
 import copy
+import enum
 
 from .. import common
 
@@ -32,14 +33,14 @@ class ReadOnlyService(DomainType):
         super().__init__(api, cls.domain_type)
         self._cls = cls
 
-    def from_id(self, identifier):
+    def from_identifier(self, identifier):
         return self._cls(self.api, identifier)
 
-    def from_value(self, value, etag=None):
-        return self._cls.from_value(self.api, value, etag)
+    def from_object(self, obj, etag=None):
+        return self._cls.from_object(self.api, obj, etag)
 
     def __call__(self, identifier):
-        return self.from_id(identifier)
+        return self.from_identifier(identifier)
 
     def _action(self, method, action, **parameter):
         return self.api.rest._type_action(
@@ -52,9 +53,8 @@ class ReadOnlyService(DomainType):
         )
 
     def list(self, collection_name="all", **parameter):  # noqa: A003
-        result, _ = self._collection("GET", collection_name, **(serialize(parameter)))
-        service = self.api.get_service(result["domainType"])
-        return [service.from_value(item) for item in result["value"]]
+        result = self._collection("GET", collection_name, **(serialize(parameter)))
+        return self.api.from_collection(*result)
 
 
 class ReadOnlyObject(abc.ABC):
@@ -132,14 +132,13 @@ class ReadOnlyObject(abc.ABC):
         return NotImplemented
 
     def list(self, collection_name="all", **parameter):  # noqa: A003
-        result, _ = self._collection("GET", collection_name, **parameter)
-        service = self.api.get_service(result["domainType"])
-        return [service.from_value(item) for item in result["value"]]
+        result = self._collection("GET", collection_name, **parameter)
+        return self.api.from_collection(*result)
 
     @classmethod
-    def from_value(cls, api, value, etag=None):
-        result = cls(api, value["id"])
-        result._value = value
+    def from_object(cls, api, obj, etag=None):
+        result = cls(api, obj["id"])
+        result._value = obj
         result._etag = etag
         return result
 
@@ -192,13 +191,15 @@ class ReadWriteObject(ReadOnlyObject):
             self.push()
 
     @classmethod
-    def from_value(cls, api, value, etag=None):
-        return cls(api, value["id"])
+    def from_object(cls, api, obj, etag=None):
+        return cls(api, obj["id"])
 
 
 def serialize(item):
     if isinstance(item, ReadOnlyObject):
         return item.identifier
+    elif isinstance(item, enum.Enum):
+        return item.value
     elif isinstance(item, collections.abc.Mapping):
         return {k: serialize(v) for k, v in item.items()}
     elif isinstance(item, str):

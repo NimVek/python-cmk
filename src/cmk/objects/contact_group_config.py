@@ -17,5 +17,5 @@ class ContactGroupConfig(base.ReadWriteObject):
             return super().create(
                 name=name,
                 alias=alias or name,
-                **parameter,
+                **(self.api.version.customer_required(parameter)),
             )
