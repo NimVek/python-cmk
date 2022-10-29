@@ -64,6 +64,7 @@ class ObjectAPI:
         self.add_domain_type(objects.Ruleset)
         self.add_domain_type(objects.Rule)
         self.add_domain_type(objects.ContactGroupConfig)
+        self.add_domain_type(objects.UserRole)
 
         self.add_domain_type(objects.Service)
         self.add_domain_type(objects.Host)

@@ -8,3 +8,4 @@ from .ruleset import Ruleset
 from .service import Service
 from .service_discovery import ServiceDiscovery
 from .user_config import UserConfig
+from .user_role import UserRole
