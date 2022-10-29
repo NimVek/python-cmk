@@ -23,6 +23,7 @@ class FolderConfig(attributes.Attributes):
             )
 
         def __call__(self, identifier):
+            identifier = identifier.replace("/", "~").replace("\\", "~")
             if not identifier.startswith("~"):
                 identifier = "~" + identifier
             return super().__call__(identifier)

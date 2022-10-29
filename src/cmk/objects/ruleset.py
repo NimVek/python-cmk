@@ -14,3 +14,7 @@ class Ruleset(base.ReadOnlyObject):
 
     class Service(base.ReadOnlyService):
         pass
+
+    @property
+    def rules(self):
+        return self.api.Rule.list(ruleset_name=self.identifier)

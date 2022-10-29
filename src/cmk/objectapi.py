@@ -96,7 +96,7 @@ class ObjectAPI:
 
     def from_collection(self, collection, etag=None):
         service = self.get_service(collection["domainType"])
-        return (service.from_object(obj) for obj in collection["value"])
+        return tuple(service.from_object(obj) for obj in collection["value"])
 
     def from_envelope(self, envelope, etag=None):
         if "value" in envelope:

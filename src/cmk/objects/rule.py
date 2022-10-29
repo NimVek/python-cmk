@@ -1,7 +1,7 @@
 """Rule-Object for Object-API."""
 from __future__ import annotations
 
-import json
+import ast
 
 from . import base
 
@@ -23,15 +23,23 @@ class Rule(base.ReadWriteObject):
             properties={"disabled": False},
             conditions={},
         ):
-            if not isinstance(value, str):
-                value = json.dumps(value)
+            value_raw = repr(base.serialize(value))
             return super().create(
                 ruleset=ruleset,
                 folder=folder,
                 properties=properties,
-                value_raw=value,
+                value_raw=value_raw,
                 conditions=conditions,
             )
 
-        def list(self, ruleset_name):
-            return super().list(ruleset_name=ruleset_name)
+    @property
+    def ruleset(self):
+        return self.api.Ruleset(self.extension("ruleset"))
+
+    @property
+    def value(self):
+        return ast.literal_eval(self.extension("value_raw"))
+
+    @property
+    def folder(self):
+        return self.api.FolderConfig(self.extension("folder"))
