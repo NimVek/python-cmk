@@ -43,3 +43,7 @@ class Rule(base.ReadWriteObject):
     @property
     def folder(self):
         return self.api.FolderConfig(self.extension("folder"))
+
+    @property
+    def conditions(self):
+        return {k: v for k, v in self.extension("conditions").items() if v}

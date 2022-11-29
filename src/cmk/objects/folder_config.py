@@ -43,7 +43,7 @@ class FolderConfig(attributes.Attributes):
         def create(self, name, title=None, parent=None, **parameter):
             return self.service.create(
                 name=name,
-                title=title,
+                title=title or name,
                 parent=parent or self.parent,
                 **parameter,
             )
@@ -70,3 +70,27 @@ class FolderConfig(attributes.Attributes):
         super().__init__(api, identifier)
         self.FolderConfig = FolderConfig.FolderParentService(api, FolderConfig, self)
         self.HostConfig = FolderConfig.HostParentService(api, HostConfig, self)
+
+    @property
+    def title(self):
+        return self.__title or self._value["title"]
+
+    @title.setter
+    def title(self, value):
+        self.__title = value or self.identifier
+
+    def invalidate(self):
+        super().invalidate()
+        self.__title = None
+
+    def _changed(self):
+        changed = super()._changed()
+        if self.__title != self._value["title"]:
+            changed["title"] = self.__title
+        return changed
+
+    @property
+    def folders(self):
+        return self.api.FolderConfig.list(
+            parent=self, recursive=False, show_hosts=False
+        )

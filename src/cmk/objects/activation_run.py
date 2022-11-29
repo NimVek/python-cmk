@@ -16,4 +16,4 @@ class ActivationRun(base.ReadOnlyObject):
         def activate_changes(self, **parameter):
             result = self._action("POST", "activate-changes", **parameter)
             __log__.debug(result)
-            return self.from_object(*result) if result[0] else None
+            return result

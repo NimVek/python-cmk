@@ -20,10 +20,12 @@ class Attributes(base.ReadWriteObject):
         return self.attributes.get(name, default)
 
     def set_attribute(self, name, value):
+        attributes = self.attributes.copy()
         if value is None:
-            self.attributes.pop(name, None)
+            attributes.pop(name, None)
         else:
-            self.attributes[name] = value
+            attributes[name] = value
+        self.set_extension("attributes", attributes)
 
     @property
     def labels(self):
@@ -49,11 +51,15 @@ class Attributes(base.ReadWriteObject):
 
 
 class EffectiveAttributes(Attributes):
-    show = partialmethod(Attributes.show, effective_attributes=True)
+    pull = partialmethod(Attributes.pull, effective_attributes=True)
 
     @property
     def effective_attributes(self):
-        return self.extension("effective_attributes", {})
+        result = self.extension("effective_attributes", {})
+        if result is None:
+            self.pull()
+            result = self.extension("effective_attributes", {})
+        return result
 
     def effective_attribute(self, name, default=None):
         return self.effective_attributes.get(name, default)

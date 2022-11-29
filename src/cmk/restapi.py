@@ -18,7 +18,6 @@ class RESTAPI(common.API):
         super().__init__(url, user, password)
         self._session.base /= "api/v0"
         self._session.headers["Authorization"] = f"Bearer {self._user} {self._password}"
-        #        self._session.headers["Accept"] = "application/json"
         __logger__.debug(self._session.headers)
 
     def _request(self, method, url, etag=None, data=None):

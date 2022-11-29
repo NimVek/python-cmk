@@ -5,6 +5,7 @@ import abc
 import collections.abc
 import copy
 import enum
+import json
 
 from .. import common
 
@@ -32,29 +33,33 @@ class ReadOnlyService(DomainType):
     def __init__(self, api, cls):
         super().__init__(api, cls.domain_type)
         self._cls = cls
+        self._cache = {}
 
     def from_identifier(self, identifier):
-        return self._cls(self.api, identifier)
+        if identifier not in self._cache:
+            self._cache[identifier] = self._cls(self.api, identifier)
+        return self._cache[identifier]
 
-    def from_object(self, obj, etag=None):
-        return self._cls.from_object(self.api, obj, etag)
+    def from_object(self, value, etag=None):
+        obj = self.from_identifier(value["id"])
+        obj._update_internal(value, etag)
+        return obj
 
     def __call__(self, identifier):
         return self.from_identifier(identifier)
 
     def _action(self, method, action, **parameter):
-        return self.api.rest._type_action(
+        return self.api._type_action(
             method, self.domain_type, action, **(serialize(parameter))
         )
 
     def _collection(self, method, collection_name="all", **parameter):
-        return self.api.rest._type_collection(
+        return self.api._type_collection(
             method, self.domain_type, collection_name, **(serialize(parameter))
         )
 
     def list(self, collection_name="all", **parameter):  # noqa: A003
-        result = self._collection("GET", collection_name, **(serialize(parameter)))
-        return self.api.from_collection(*result)
+        return self._collection("GET", collection_name, **(serialize(parameter)))
 
 
 class ReadOnlyObject(abc.ABC):
@@ -69,8 +74,20 @@ class ReadOnlyObject(abc.ABC):
         raise NotImplementedError
 
     def invalidate(self):
-        self._etag = None
-        self._value = {}
+        self.__etag = None
+        self.__value = {}
+
+    @property
+    def _value(self):
+        if not self.__value:
+            self.pull()
+        return self.__value
+
+    @property
+    def _etag(self):
+        if not self.__etag:
+            self.pull()
+        return self.__etag
 
     @property
     def api(self):
@@ -81,17 +98,17 @@ class ReadOnlyObject(abc.ABC):
         return self._identifier
 
     def _(self, method, **parameter):
-        return self.api.rest._object(
+        return self.api._object(
             method, self.domain_type, self.identifier, **(serialize(parameter))
         )
 
     def _action(self, method, action, **parameter):
-        return self.api.rest._object_action(
+        return self.api._object_action(
             method, self.domain_type, self.identifier, action, **(serialize(parameter))
         )
 
     def _collection(self, method, collection_name="all", **parameter):
-        return self.api.rest._object_collection(
+        return self.api._object_collection(
             method,
             self.domain_type,
             self.identifier,
@@ -99,20 +116,22 @@ class ReadOnlyObject(abc.ABC):
             **(serialize(parameter)),
         )
 
-    def show(self, **parameter):
+    def pull(self, **parameter):
         return self._("GET", **parameter)
-
-    def pull(self):
-        self._value, self._etag = self.show()
 
     @property
     def extensions(self):
-        if not self._value:
-            self.pull()
         return self._value["extensions"]
 
     def extension(self, name, default=None):
-        return self.extensions.get(name, default)
+        return self._value["extensions"].get(name, default)
+
+    def __getattr__(self, key):
+        if key not in self._value["extensions"]:
+            raise AttributeError(
+                f"'{self.__class__.__name__}' object has no attribute '{key}'"
+            )
+        return self._value["extensions"][key]
 
     def __bool__(self):
         try:
@@ -131,22 +150,23 @@ class ReadOnlyObject(abc.ABC):
             return self.identifier == other
         return NotImplemented
 
-    def list(self, collection_name="all", **parameter):  # noqa: A003
-        result = self._collection("GET", collection_name, **parameter)
-        return self.api.from_collection(*result)
+    def __hash__(self):
+        return hash(self.identifier)
 
-    @classmethod
-    def from_object(cls, api, obj, etag=None):
-        result = cls(api, obj["id"])
-        result._value = obj
-        result._etag = etag
-        return result
+    def __repr__(self):
+        return f"{self.__class__.__name__}({repr(self.identifier)})"
+
+    def list(self, collection_name="all", **parameter):  # noqa: A003
+        return self._collection("GET", collection_name, **parameter)
+
+    def _update_internal(self, value, etag):
+        self.__value = value
+        self.__etag = etag
 
 
 class ReadWriteService(ReadOnlyService):
     def create(self, **parameter):
-        result, _ = self._collection("POST", **(serialize(parameter)))
-        return self(result["id"])
+        return self._collection("POST", **(serialize(parameter)))
 
 
 class ReadWriteObject(ReadOnlyObject):
@@ -163,22 +183,31 @@ class ReadWriteObject(ReadOnlyObject):
         self.invalidate()
         return self
 
-    def pull(self):
-        super().pull()
-        self._extensions = copy.deepcopy(self._value["extensions"])
-
-    def push(self):
-        extensions = {}
-        for key, value in self.extensions.items():
-            old_value = self._serialize_extension(key, self._extensions.get(key))
+    def _changed(self):
+        changed = {}
+        for key, value in self._extensions.items():
+            old_value = self._serialize_extension(key, super().extension(key))
             new_value = self._serialize_extension(key, value)
             if new_value != old_value:
-                extensions[key] = new_value
-        if extensions:
-            self.update(**extensions)
+                changed[key] = new_value
+        return changed
+
+    def push(self):
+        changed = self._changed()
+        if changed:
+            self.update(**changed)
+
+    @property
+    def extensions(self):
+        extensions = super().extensions.copy()
+        extensions.update(self._extensions)
+        return extensions
+
+    def extension(self, name, default=None):
+        return self._extensions.get(name, super().extension(name, default))
 
     def set_extension(self, name, value):
-        self.extensions[name] = value
+        self._extensions[name] = value
 
     def _serialize_extension(self, name, value):
         return serialize(value)
@@ -190,9 +219,22 @@ class ReadWriteObject(ReadOnlyObject):
         if typ is None:
             self.push()
 
-    @classmethod
-    def from_object(cls, api, obj, etag=None):
-        return cls(api, obj["id"])
+
+class QueryService(ReadOnlyService):
+    def query(self, sites=[], query={}, columns=[]):
+        return self.list(sites=sites, query=json.dumps(query), columns=columns)
+
+
+class LinkService(DomainType):
+    def __init__(self, api):
+        super().__init__(api, "link")
+
+    def from_object(self, obj):
+        assert obj["method"] == "GET"
+        objects, service, identifier = obj["href"].split("/")[-3:]
+        assert objects == "objects"
+        service = self.api.get_service(service)
+        return service.from_identifier(identifier)
 
 
 def serialize(item):
@@ -200,11 +242,13 @@ def serialize(item):
         return item.identifier
     elif isinstance(item, enum.Enum):
         return item.value
-    elif isinstance(item, collections.abc.Mapping):
-        return {k: serialize(v) for k, v in item.items()}
     elif isinstance(item, str):
         return item
-    elif isinstance(item, collections.abc.Iterable):
+    elif isinstance(item, collections.abc.Mapping):
+        return {k: serialize(v) for k, v in item.items()}
+    elif isinstance(item, collections.abc.MutableSequence):
         return [serialize(v) for v in item]
+    elif isinstance(item, collections.abc.Iterable):
+        return tuple(serialize(v) for v in item)
     else:
         return item

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import enum
 
-from functools import cached_property
+from functools import cached_property, partialmethod
 
 from . import common, objects
 from .httpapi import HTTPAPI
@@ -36,7 +36,7 @@ class Edition(enum.Enum):
 
 class Version:
     def __init__(self, api):
-        self._version, _ = api.rest._request("GET", "version")
+        self._version = api._request("GET", "version")
 
     @cached_property
     def edition(self):
@@ -56,21 +56,13 @@ class ObjectAPI:
         self._restapi = RESTAPI(url, user, password)
         self._httpapi = HTTPAPI(url, user, password)
 
-        self.domain_types = {}
-        self.add_domain_type(objects.FolderConfig)
-        self.add_domain_type(objects.HostConfig)
-        self.add_domain_type(objects.UserConfig)
-        self.add_domain_type(objects.ActivationRun)
-        self.add_domain_type(objects.Ruleset)
-        self.add_domain_type(objects.Rule)
-        self.add_domain_type(objects.ContactGroupConfig)
-        self.add_domain_type(objects.UserRole)
+        self.domain_types = {"dict": None, "link": objects.LinkService(self)}
 
-        self.add_domain_type(objects.Service)
-        self.add_domain_type(objects.Host)
-        self.add_domain_type(objects.ServiceDiscovery)
+        for obj in all_subclasses(objects.ReadOnlyObject):
+            if hasattr(obj, "Service"):
+                self.add_domain_type(obj)
 
-        self.root = objects.FolderConfig(self, "~")
+        self.domain_types["contact_group"] = self.domain_types["contact_group_config"]
 
     @property
     def rest(self):
@@ -80,30 +72,50 @@ class ObjectAPI:
     def http(self):
         return self._httpapi
 
+    def __wrapper(self, _method, *args, **kwargs):
+        data, etag = getattr(self.rest, _method)(*args, **kwargs)
+        if isinstance(data, dict) and "domainType" in data:
+            if "value" in data:
+                return self.from_collection(data, etag)
+            else:
+                return self.from_object(data, etag)
+        else:
+            return data
+
+    _request = partialmethod(__wrapper, "_request")
+
+    _type_action = partialmethod(__wrapper, "_type_action")
+    _type_collection = partialmethod(__wrapper, "_type_collection")
+
+    _object = partialmethod(__wrapper, "_object")
+    _object_action = partialmethod(__wrapper, "_object_action")
+    _object_collection = partialmethod(__wrapper, "_object_collection")
+
     @cached_property
     def version(self):
         return Version(self)
+
+    @cached_property
+    def root(self):
+        return self.FolderConfig("~")  # type: ignore[attr-defined]
 
     def get_service(self, domain_type):
         return self.domain_types[domain_type]
 
     def add_domain_type(self, cls, **parameter):
-        self.domain_types[cls.domain_type] = cls.Service(self, cls, **parameter)
-        setattr(self, cls.__name__, self.domain_types[cls.domain_type])
+        service = cls.Service(self, cls, **parameter)
+        self.domain_types[cls.domain_type] = service
+        setattr(self, cls.__name__, service)
 
     def from_object(self, obj, etag=None):
         service = self.get_service(obj["domainType"])
         return service.from_object(obj, etag)
 
     def from_collection(self, collection, etag=None):
-        service = self.get_service(collection["domainType"])
-        return tuple(service.from_object(obj) for obj in collection["value"])
-
-    def from_envelope(self, envelope, etag=None):
-        if "value" in envelope:
-            return self.from_collection(envelope, etag)
-        else:
-            return self.from_object(envelope, etag)
+        collection_service = self.get_service(collection["domainType"])
+        for obj in collection["value"]:
+            object_service = self.get_service(obj["domainType"])
+            yield (object_service or collection_service).from_object(obj)
 
     def __enter__(self):
         return self

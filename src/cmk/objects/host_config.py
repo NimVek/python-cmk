@@ -21,6 +21,17 @@ class HostConfig(attributes.EffectiveAttributes):
             )
 
     def rename(self, new_name):
-        result = self._action("PUT", "rename", new_name=new_name)
+        result = self._action("PUT", "rename", etag=self._etag, new_name=new_name)
         __log__.debug(result)
-        return self.from_object(*result)
+        return result
+
+    def move(self, target_folder):
+        result = self._action(
+            "POST", "move", etag=self._etag, target_folder=target_folder
+        )
+        __log__.debug(result)
+        return result
+
+    @property
+    def folder(self):
+        return self.api.FolderConfig(self.extension("folder"))

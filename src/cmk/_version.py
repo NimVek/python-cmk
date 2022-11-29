@@ -6,5 +6,5 @@
 from incremental import Version
 
 
-__version__ = Version("cmk", 22, 11, 0)
+__version__ = Version("cmk", 22, 12, 0)
 __all__ = ["__version__"]
