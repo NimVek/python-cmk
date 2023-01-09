@@ -14,11 +14,6 @@ class Host(dictionary.Dictionary):
 
     class Service(base.QueryService):
         def query(self, sites=[], query={}, columns=["name"]):
-            if len(columns) == 1:
-                if "name" in columns:
-                    columns.append("alias")
-                else:
-                    columns.append("name")
             return super().query(sites=sites, query=query, columns=columns)
 
     def services(self, sites=None, query=None, columns=None):

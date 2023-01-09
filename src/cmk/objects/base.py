@@ -58,8 +58,13 @@ class ReadOnlyService(DomainType):
             method, self.domain_type, collection_name, **(serialize(parameter))
         )
 
-    def list(self, collection_name="all", **parameter):  # noqa: A003
+    def iter(self, collection_name="all", **parameter):  # noqa: A003
         return self._collection("GET", collection_name, **(serialize(parameter)))
+
+    def list(self, collection_name="all", **parameter):  # noqa: A003
+        return list(
+            self.iter(collection_name=collection_name, **(serialize(parameter)))
+        )
 
 
 class ReadOnlyObject(abc.ABC):
@@ -156,8 +161,11 @@ class ReadOnlyObject(abc.ABC):
     def __repr__(self):
         return f"{self.__class__.__name__}({repr(self.identifier)})"
 
-    def list(self, collection_name="all", **parameter):  # noqa: A003
+    def iter(self, collection_name="all", **parameter):  # noqa: A003
         return self._collection("GET", collection_name, **parameter)
+
+    def list(self, collection_name="all", **parameter):  # noqa: A003
+        return list(self.iter(collection_name=collection_name, **parameter))
 
     def _update_internal(self, value, etag):
         self.__value = value
