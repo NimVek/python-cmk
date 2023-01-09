@@ -83,7 +83,7 @@ license = "GPL-3.0-or-later"
 name = "python-cmk"
 readme = "README.md"
 repository = "https://github.com/NimVek/python-cmk"
-version = "22.12.0"
+version = "22.12.1"
 packages = [
   {include = "cmk", from = "src"}
 ]
