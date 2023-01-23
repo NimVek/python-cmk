@@ -35,3 +35,11 @@ class HostConfig(attributes.EffectiveAttributes):
     @property
     def folder(self):
         return self.api.FolderConfig(self.extension("folder"))
+
+    def status(self, columns=None):
+        hosts = self.api.Host.query(
+            query={"op": "=", "left": "name", "right": self.identifier},
+            columns=columns or ["name"],
+        )
+        if hosts:
+            return hosts[0]
