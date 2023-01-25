@@ -4,6 +4,7 @@ from .contact_group_config import ContactGroupConfig
 from .folder_config import FolderConfig
 from .host import Host
 from .host_config import HostConfig
+from .host_group_config import HostGroupConfig
 from .rule import Rule
 from .ruleset import Ruleset
 from .service import Service
