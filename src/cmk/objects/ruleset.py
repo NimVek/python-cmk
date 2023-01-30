@@ -18,3 +18,6 @@ class Ruleset(base.ReadOnlyObject):
     @property
     def rules(self):
         return self.api.Rule.list(ruleset_name=self.identifier)
+
+    def __len__(self):
+        return self.number_of_rules

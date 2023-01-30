@@ -63,6 +63,8 @@ class ObjectAPI:
                 self.add_domain_type(obj)
 
         self.domain_types["contact_group"] = self.domain_types["contact_group_config"]
+        self.domain_types["host_group"] = self.domain_types["host_group_config"]
+        self.domain_types["service_group"] = self.domain_types["service_group_config"]
 
     @property
     def rest(self):

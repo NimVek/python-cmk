@@ -3,8 +3,6 @@ from __future__ import annotations
 
 import collections.abc
 
-from functools import partialmethod
-
 from . import base
 
 import logging

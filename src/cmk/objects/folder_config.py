@@ -85,7 +85,7 @@ class FolderConfig(attributes.Attributes):
 
     def _changed(self):
         changed = super()._changed()
-        if self.__title != None and self._value["title"] != self.__title:
+        if self.__title is not None and self._value["title"] != self.__title:
             changed["title"] = self.__title
         return changed
 
