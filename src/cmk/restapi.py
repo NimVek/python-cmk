@@ -37,12 +37,15 @@ class RESTAPI(common.API):
             json=_data,
             headers=headers,
         ) as response:
-            if not response:
+
+            if response.headers.get("Content-Type") == "application/problem+json":
                 raise common.MKRESTError(response.json())
+            response.raise_for_status()
+
             if response.headers.get("Content-Type") == "application/json":
                 result = response.json()
             elif response.encoding:
-                resutl = response.text
+                result = response.text
             else:
                 result = response.content
             etag = json.loads(response.headers.get("ETag", "null"))
