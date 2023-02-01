@@ -62,6 +62,8 @@ class ObjectAPI:
             if hasattr(obj, "Service"):
                 self.add_domain_type(obj)
 
+        # INCONSISTENCY
+        # asking for a "contact_group_config"-object returns a "contact_group"-object
         self.domain_types["contact_group"] = self.domain_types["contact_group_config"]
         self.domain_types["host_group"] = self.domain_types["host_group_config"]
         self.domain_types["service_group"] = self.domain_types["service_group_config"]

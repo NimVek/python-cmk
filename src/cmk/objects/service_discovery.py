@@ -9,8 +9,14 @@ import logging
 __log__ = logging.getLogger(__name__)
 
 
-class ServiceDiscovery(dictionary.Dictionary):
+class ServiceDiscovery(base.ReadOnlyObject):
     domain_type = "service_discovery"
 
     class Service(base.ReadOnlyService):
-        pass
+        def from_identifier(self, identifier):
+            # INCONSISTENCY: id of return object
+            # is: service_discovery-{hostname}
+            # should be: {hostname}
+            if identifier.startswith("service_discovery-"):
+                identifier = identifier[18:]
+            return super().from_identifier(identifier)
