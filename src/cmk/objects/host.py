@@ -26,6 +26,15 @@ class Host(dictionary.Dictionary):
             "GET", "show_service", service_description=service_description
         )
 
+    def update_discovery_phase(self, check_type, service_item, target_phase):
+        return self._action(
+            "PUT",
+            "update_discovery_phase",
+            check_type=check_type,
+            service_item=service_item,
+            target_phase=target_phase,
+        )
+
     @property
     def config(self):
         return self.api.HostConfig(self.identifier)
