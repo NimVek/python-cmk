@@ -37,7 +37,6 @@ class RESTAPI(common.API):
             json=_data,
             headers=headers,
         ) as response:
-
             if response.headers.get("Content-Type") == "application/problem+json":
                 raise common.MKRESTError(response.json())
             response.raise_for_status()

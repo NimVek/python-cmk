@@ -20,9 +20,13 @@ class Rule(base.ReadWriteObject):
             ruleset,
             value,
             folder="~",
-            properties={"disabled": False},
-            conditions={},
+            properties=None,
+            conditions=None,
         ):
+            if properties is None:
+                properties = {"disabled": False}
+            if conditions is None:
+                conditions = {}
             value_raw = repr(base.serialize(value))
             return super().create(
                 ruleset=ruleset,
@@ -47,3 +51,10 @@ class Rule(base.ReadWriteObject):
     @property
     def conditions(self):
         return {k: v for k, v in self.extension("conditions").items() if v}
+
+    def move(self, position, **parameter):
+        result = self._action(
+            "POST", "move", etag=self._etag, position=position, **parameter
+        )
+        __log__.debug(result)
+        return result

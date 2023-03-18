@@ -228,7 +228,13 @@ class ReadWriteObject(ReadOnlyObject):
 
 
 class QueryService(ReadOnlyService):
-    def query(self, sites=[], query={}, columns=[]):
+    def query(self, sites=None, query=None, columns=None):
+        if sites is None:
+            sites = []
+        if query is None:
+            query = {}
+        if columns is None:
+            columns = []
         return self.list(sites=sites, query=json.dumps(query), columns=columns)
 
 

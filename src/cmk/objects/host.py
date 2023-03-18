@@ -13,7 +13,9 @@ class Host(dictionary.Dictionary):
     domain_type = "host"
 
     class Service(base.QueryService):
-        def query(self, sites=[], query={}, columns=["name"]):
+        def query(self, sites=None, query=None, columns=None):
+            if columns is None:
+                columns = ["name"]
             return super().query(sites=sites, query=query, columns=columns)
 
     def services(self, sites=None, query=None, columns=None):

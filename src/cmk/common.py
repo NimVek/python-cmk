@@ -21,7 +21,12 @@ class MKRESTError(Exception):
         self._response = response
 
     def __getattr__(self, item):
-        return self._response[item]
+        try:
+            return self._response[item]
+        except KeyError as e:
+            raise AttributeError(
+                f"{self.__class__.__name__!r} has no attribute {e.args[0]!r}"
+            )
 
 
 _CA_BUNDLE_CANDIDATES = [
@@ -63,5 +68,5 @@ class API:
         self._password = password or uri.password
         uri.remove(username=True, password=True)
         self._session = Session(uri)
-        if not self._session.base.path.segments[-1] == "check_mk":
+        if self._session.base.path.segments[-1] != "check_mk":
             self._session.base /= "check_mk"
