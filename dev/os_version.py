@@ -5,7 +5,7 @@ import platform
 if platform.system() == "Linux":
     import os
 
-    os.system("/usr/bin/lsb_release -ds")  # noqa: S605
+    os.system("/usr/bin/lsb_release -ds")
 
 elif platform.system() == "Windows":
     versions = {
@@ -22,7 +22,9 @@ elif platform.system() == "Windows":
         19042: (10, "20H2"),
         19043: (10, "21H1"),
         19044: (10, "21H2"),
+        19045: (10, "22H2"),
         22000: (11, "21H2"),
+        22621: (11, "22H2"),
     }
     result = platform.platform()
     for i in versions:

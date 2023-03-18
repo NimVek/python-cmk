@@ -30,7 +30,6 @@ def generate_api_reference():
         .tree["src"]
         .traverse(predicate=lambda i, d: i.path.endswith(".py"))
     ):
-
         module_path = path.relative_to("src").with_suffix("")
         doc_path = module_path.with_suffix(".md")
         full_doc_path = Path("api", doc_path)
