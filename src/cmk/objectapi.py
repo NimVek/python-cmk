@@ -25,11 +25,13 @@ class Edition(enum.Enum):
     FREE = "cfe"
     RAW = "cre"
     ENTERPRISE = "cee"
+    CLOUD = "cce"
     MANAGED = "cme"
     PLUS = "cpe"
     CFE = FREE
     CRE = RAW
     CEE = ENTERPRISE
+    CCE = CLOUD
     CME = MANAGED
     CPE = PLUS
 
@@ -49,6 +51,18 @@ class Version:
         else:
             parameter.pop("customer")
         return parameter
+
+
+class X509:
+    def __init__(self, api):
+        self._api = api
+
+    @cached_property
+    def root_cert(self):
+        return self._api._request("GET", "root_cert")
+
+    def csr(self, csr):
+        return self._api._request("POST", "csr", data={"csr": csr})
 
 
 class ObjectAPI:
@@ -98,6 +112,10 @@ class ObjectAPI:
     @cached_property
     def version(self):
         return Version(self)
+
+    @cached_property
+    def x509(self):
+        return X509(self)
 
     @cached_property
     def root(self):

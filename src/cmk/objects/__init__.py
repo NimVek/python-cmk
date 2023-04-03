@@ -1,10 +1,14 @@
 from .activation_run import ActivationRun
+from .aux_tag import AuxTag
 from .base import LinkService, ReadOnlyObject, ReadWriteObject
+from .bi_aggregation import BiAggregation
+from .bi_pack import BiPack
 from .contact_group_config import ContactGroupConfig
 from .folder_config import FolderConfig
 from .host import Host
 from .host_config import HostConfig
 from .host_group_config import HostGroupConfig
+from .internal import Internal
 from .rule import Rule
 from .ruleset import Ruleset
 from .service import Service
