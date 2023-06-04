@@ -26,12 +26,14 @@ class Edition(enum.Enum):
     RAW = "cre"
     ENTERPRISE = "cee"
     CLOUD = "cce"
+    SAAS = "saas"
     MANAGED = "cme"
     PLUS = "cpe"
     CFE = FREE
     CRE = RAW
     CEE = ENTERPRISE
     CCE = CLOUD
+    CSE = SAAS
     CME = MANAGED
     CPE = PLUS
 
