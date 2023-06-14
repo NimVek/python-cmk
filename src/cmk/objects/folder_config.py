@@ -94,3 +94,7 @@ class FolderConfig(attributes.Attributes):
         return self.api.FolderConfig.list(
             parent=self, recursive=False, show_hosts=False
         )
+
+    @property
+    def hosts(self):
+        return self.list(collection_name="hosts")
