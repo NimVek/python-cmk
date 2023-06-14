@@ -15,5 +15,6 @@ from .service import Service
 from .service_discovery import ServiceDiscovery
 from .service_discovery_run import ServiceDiscoveryRun
 from .service_group_config import ServiceGroupConfig
+from .site_connection import SiteConnection
 from .user_config import UserConfig
 from .user_role import UserRole
