@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Caching
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ${{ matrix.CACHE_PIP }}
@@ -77,7 +77,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Caching
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ${{ matrix.CACHE_PIP }}
@@ -142,7 +142,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Caching
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ${{ matrix.CACHE_PIP }}
@@ -200,7 +200,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Caching
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ${{ matrix.CACHE_PIP }}
