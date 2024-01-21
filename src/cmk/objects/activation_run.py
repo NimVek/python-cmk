@@ -13,7 +13,7 @@ class ActivationRun(base.ReadOnlyObject):
     domain_type = "activation_run"
 
     class Service(base.ReadOnlyService):
-        def activate_changes(self, **parameter):
-            result = self._action("POST", "activate-changes", **parameter)
+        def activate_changes(self, etag="*", **parameter):
+            result = self._action("POST", "activate-changes", etag=etag, **parameter)
             __log__.debug(result)
             return result
