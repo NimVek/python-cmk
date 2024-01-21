@@ -115,6 +115,7 @@ class RESTAPI(common.API):
             "GET", domain_type, collection_name=collection_name, **parameter
         )
 
-    activate_changes = partialmethod(
-        _type_action, "POST", "activation_run", "activate-changes"
-    )
+    def activate_changes(self, etag="*", **parameter):
+        return self._type_action(
+            "POST", "activation_run", "activate-changes", etag=etag, **parameter
+        )
