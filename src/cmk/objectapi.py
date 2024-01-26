@@ -1,4 +1,5 @@
 """Object-API for python-cmk."""
+
 from __future__ import annotations
 
 import enum
@@ -124,7 +125,7 @@ class ObjectAPI:
         return self.FolderConfig("~")  # type: ignore[attr-defined]
 
     def get_service(self, domain_type):
-        return self.domain_types[domain_type]
+        return self.domain_types.get(domain_type)
 
     def add_domain_type(self, cls, **parameter):
         service = cls.Service(self, cls, **parameter)
@@ -138,7 +139,9 @@ class ObjectAPI:
     def from_collection(self, collection, etag=None):
         collection_service = self.get_service(collection["domainType"])
         for obj in collection["value"]:
-            object_service = self.get_service(obj["domainType"])
+            object_service = self.get_service(
+                obj.get("domainType", collection["domainType"])
+            )
             yield (object_service or collection_service).from_object(obj)
 
     def __enter__(self):

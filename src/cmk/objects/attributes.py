@@ -1,4 +1,5 @@
 """Object-API for python-cmk."""
+
 from __future__ import annotations
 
 from functools import partialmethod

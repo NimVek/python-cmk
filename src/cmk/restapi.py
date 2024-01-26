@@ -1,4 +1,5 @@
 """RESTAPI for python-cmk."""
+
 from __future__ import annotations
 
 import json

@@ -1,4 +1,5 @@
 """SiteConnection-Object for Object-API."""
+
 from __future__ import annotations
 
 from . import base

@@ -1,4 +1,5 @@
 """Top-level package for python-cmk."""
+
 from __future__ import annotations
 
 from .__about__ import (
