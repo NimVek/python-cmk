@@ -1,10 +1,10 @@
 """Helper to determine to correct Python and OS version."""
 
+import os
 import platform
-import sys
 
 
-def os():
+def get_os():
     if platform.system() == "Linux":
         try:
             import subprocess
@@ -47,6 +47,6 @@ def os():
     return platform.platform(terse=True)
 
 
-with open(sys.argv[1], "a") as f:
+with open(os.environ["GITHUB_ENV"], "a") as f:
     f.write(f"PYTHON={platform.python_version()}\n")
-    f.write(f"OS={os()}\n")
+    f.write(f"OS={get_os()}\n")

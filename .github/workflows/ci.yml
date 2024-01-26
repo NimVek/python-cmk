@@ -100,7 +100,7 @@ jobs:
 
       - name: Collect Environment
         run: |
-          python dev/github_env.py $GITHUB_ENV
+          python dev/github_env.py
 
       - name: Test
         run: |
@@ -165,8 +165,7 @@ jobs:
 
       - name: Collect Environment
         run: |
-          echo "PYTHON=$(python -c 'import platform; print(platform.python_version())')" >> $GITHUB_ENV
-          echo "OS=$(python dev/os_version.py)" >> $GITHUB_ENV
+          python dev/github_env.py
 
       - name: Test
         run: |
