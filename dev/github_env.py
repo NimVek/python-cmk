@@ -44,7 +44,7 @@ def get_os():
         except Exception:
             pass
 
-    return platform.platform(terse=True)
+    return platform.platform()
 
 
 with open(os.environ["GITHUB_ENV"], "a") as f:
