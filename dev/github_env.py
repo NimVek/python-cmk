@@ -35,8 +35,20 @@ def get_os():
             return versions[build]
         except Exception:
             pass
+
     if platform.system() == "Darwin":
-        return f"{platform.release()!r} {platform.version()!r}"
+        versions = {
+            20: "macOS Big Sur",
+            21: "macOS Monterey",
+            22: "macOS Ventura",
+            23: "macOS Sonoma",
+        }
+        try:
+            darwin = int(platform.release().split(".")[0])
+            version = platform.platform().split("-")[1]
+            return f"{versions[darwin]} ({version})"
+        except Exception:
+            pass
 
     return platform.platform()
 
