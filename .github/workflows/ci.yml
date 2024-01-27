@@ -189,8 +189,19 @@ jobs:
     name: Documentation
     runs-on: ${{ matrix.os }}
     needs: [test-simple, test-full]
+
     permissions:
-      contents: write
+      contents: read
+      pages: write
+      id-token: write
+
+    concurrency:
+      group: documentation
+      cancel-in-progress: false
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
 
@@ -224,8 +235,13 @@ jobs:
         run: |
           poetry run mkdocs build
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: site
+          path: site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
