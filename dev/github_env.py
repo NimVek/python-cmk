@@ -20,29 +20,23 @@ def get_os():
 
     if platform.system() == "Windows":
         versions = {
-            10240: 1507,
-            10586: 1511,
-            14393: 1607,
-            15063: 1703,
-            16299: 1709,
-            17134: 1803,
-            17763: 1809,
-            18362: 1903,
-            18363: 1909,
-            19041: 2004,
-            19042: "20H2",
-            19043: "21H1",
-            19044: "21H2",
-            19045: "22H2",
-            22000: "21H2",
-            22621: "22H2",
-            22631: "23H2",
+            14393: "Windows Server 2016 (1607)",
+            16299: "Windows Server 2016 (1709)",
+            17134: "Windows Server 2016 (1803)",
+            17763: "Windows Server 2019 (1809)",
+            18362: "Windows Server 2019 (1903)",
+            18363: "Windows Server 2019 (1909)",
+            19041: "Windows Server 2019 (2004)",
+            19042: "Windows Server 2019 (20H2)",
+            20348: "Windows Server 2022 (21H2)",
         }
         try:
-            version = int(platform.version().split(".")[-1])
-            return f"Windows-{platform.release()} ({versions[version]})"
+            build = int(platform.version().split(".")[-1])
+            return versions[build]
         except Exception:
             pass
+    if platform.system() == "Darwin":
+        return f"{platform.release()!r} {platform.version()!r}"
 
     return platform.platform()
 
