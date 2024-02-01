@@ -107,7 +107,7 @@ jobs:
           poetry run pytest -m "not docker" --verbose --numprocesses=auto --cov=src --cov-report=xml
 
       - name: Coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           env_vars: OS, PYTHON
 
@@ -172,7 +172,7 @@ jobs:
           poetry run pytest --verbose --numprocesses=auto --cov=src --cov-report=xml
 
       - name: Coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           env_vars: OS, PYTHON
 
