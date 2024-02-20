@@ -3,7 +3,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.13.0
+    rev: v3.15.0
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -59,7 +59,7 @@ repos:
           - pyflakes
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.15.0
+    rev: v3.15.1
     hooks:
       - id: pyupgrade
         args: [--py38-plus]
@@ -71,7 +71,7 @@ repos:
         additional_dependencies: [toml]
 
   - repo: https://github.com/psf/black
-    rev: 24.1.0
+    rev: 24.2.0
     hooks:
       - id: black
 
