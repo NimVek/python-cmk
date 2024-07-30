@@ -108,6 +108,7 @@ jobs:
       - name: Coverage
         uses: codecov/codecov-action@v4
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           env_vars: OS, PYTHON
 
   test-full:
@@ -173,6 +174,7 @@ jobs:
       - name: Coverage
         uses: codecov/codecov-action@v4
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           env_vars: OS, PYTHON
 
   docs:
