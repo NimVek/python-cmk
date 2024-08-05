@@ -52,7 +52,7 @@ class Version:
             if "customer" not in parameter:
                 parameter["customer"] = "global"
         else:
-            parameter.pop("customer")
+            parameter.pop("customer", None)
         return parameter
 
 
