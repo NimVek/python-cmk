@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from . import base
+from . import base, interface
 
 import logging
 
@@ -10,7 +10,7 @@ import logging
 __log__ = logging.getLogger(__name__)
 
 
-class ContactGroupConfig(base.ReadWriteObject):
+class ContactGroupConfig(interface.FixEmptyExtensions, base.ReadWriteObject):
     domain_type = "contact_group_config"
 
     class Service(base.ReadWriteService):

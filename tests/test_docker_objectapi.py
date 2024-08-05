@@ -20,7 +20,7 @@ def test_objectapi_notfound(api):
     assert not host
 
 
-def test_objectapi(api):
+def test_objectapi_folder(api):
     folder = api.FolderConfig("~test_folder")
     if folder:
         folder.delete()
@@ -42,3 +42,40 @@ def test_objectapi(api):
     subfolder.delete()
 
     folder.delete()
+
+
+@pytest.mark.parametrize(
+    ("class_name"),
+    [
+        ("ContactGroupConfig"),
+        ("HostGroupConfig"),
+        ("ServiceGroupConfig"),
+    ],
+)
+def test_objectapi_group_config(api, class_name):
+    gc_class = getattr(api, class_name)
+    identifier = class_name.lower() + "_name"
+    alias = class_name.lower() + "_alias"
+    gc = gc_class(identifier)
+    if gc:
+        gc.delete()
+
+    gc = gc_class.create(identifier, alias)
+
+    assert gc.identifier == identifier
+    assert gc.alias == alias
+
+    gc = gc_class(identifier)
+
+    assert gc
+    assert gc.identifier == identifier
+    assert gc.alias == alias
+
+    for i in gc_class.iter():
+        if i.identifier == identifier:
+            assert i.alias == alias
+
+    gc.delete()
+
+    gc = gc_class(identifier)
+    assert not gc

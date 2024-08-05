@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from . import base
+from . import base, interface
 
 import logging
 
@@ -10,7 +10,7 @@ import logging
 __log__ = logging.getLogger(__name__)
 
 
-class HostGroupConfig(base.ReadWriteObject):
+class HostGroupConfig(interface.FixEmptyExtensions, base.ReadWriteObject):
     domain_type = "host_group_config"
 
     class Service(base.ReadWriteService):
