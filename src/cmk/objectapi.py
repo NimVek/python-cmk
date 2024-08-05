@@ -27,7 +27,7 @@ class Edition(enum.Enum):
     RAW = "cre"
     ENTERPRISE = "cee"
     CLOUD = "cce"
-    SAAS = "saas"
+    SAAS = "cse"
     MANAGED = "cme"
     PLUS = "cpe"
     CFE = FREE
@@ -78,12 +78,6 @@ class ObjectAPI:
         for obj in all_subclasses(objects.ReadOnlyObject):
             if hasattr(obj, "Service"):
                 self.add_domain_type(obj)
-
-        # INCONSISTENCY
-        # asking for a "contact_group_config"-object returns a "contact_group"-object
-        self.domain_types["contact_group"] = self.domain_types["contact_group_config"]
-        self.domain_types["host_group"] = self.domain_types["host_group_config"]
-        self.domain_types["service_group"] = self.domain_types["service_group_config"]
 
     @property
     def rest(self):
@@ -149,8 +143,11 @@ class ObjectAPI:
 
     def __exit__(self, typ, value, traceback):
         if typ is None:
-            try:
-                self.ActivationRun.activate_changes()  # type: ignore[attr-defined]
-            except common.MKRESTError as e:
-                if e.status != 422:
-                    raise e
+            for change in self.ActivationRun.list("pending_changes"):
+                if change._value["user_id"] == self._restapi._user:
+                    try:
+                        self.ActivationRun.activate_changes()  # type: ignore[attr-defined]
+                    except common.MKRESTError as e:
+                        if e.status != 422:
+                            raise e
+                    break
