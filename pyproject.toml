@@ -116,7 +116,7 @@ pytest-xdist = "^3.6.1"
 toml-sort = "^0.23.1"
 types-requests = "^2.32.0.20240712"
 GitPython = "^3.1.43"
-ruff = "^0.5.5"
+ruff = ">=0.5.5,<0.8.0"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
